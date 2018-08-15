@@ -1,0 +1,29 @@
+body {
+    font-family: Roboto;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.fixed-bottom-right {
+    position: fixed !important;
+    bottom: 10px;
+    right: 10px;
+}
+
+.hide-overflow {
+    overflow: hidden !important;
+}
+
+.center {
+    text-align: center;
+}
+
+.max-height {
+    height: 100vh;
+}

@@ -1,0 +1,11 @@
+<div *ngIf="Card" class="full-width" style="line-height: 60px; vertical-align: middle; display: inline-block;">
+    <img class="clickable" style="vertical-align: middle;" src="{{Card.imageUrl ? Card.imageUrl : 'assets/images/card_back.jpg'}}"
+        (click)="openCardImageDialog()" height="50" aria-hidden/>
+    <span>{{Card.name}}</span>
+    <i class="ss ss-{{Card.set == 'TSB' ? 'tsp' : Card.set.toLowerCase()}} ss-{{Card.set == 'TSB' ? 'timeshifted' : Card.rarity.toLowerCase()}} ss-fw ss-grad"
+        aria-hidden></i>
+    <mat-checkbox *ngIf="viewEditMode" style="vertical-align: middle; float: right" [(ngModel)]="Card.selected"></mat-checkbox>
+    <button mat-icon-button *ngIf="viewEditMode" style="vertical-align: middle; float: right" color="warn" (click)="deleteCardEvent.emit(Card)">
+        <mat-icon>delete</mat-icon>
+    </button>
+</div>

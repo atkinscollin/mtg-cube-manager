@@ -1,0 +1,27 @@
+<header (sidenavToggled)="globalSidenav.toggle()"></header>
+<mat-sidenav-container class="max-height">
+    <mat-sidenav #globalSidenav mode="over">
+        <mat-list>
+            <mat-list-item>
+                <button mat-button (click)="globalSidenav.close()" routerLink="/">Home</button>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <!-- TODO - Add admin rights check to see and on click -->
+            <mat-list-item>
+                <button mat-button (click)="globalSidenav.close()" routerLink="/admin">Admin</button>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <!-- TODO - Don't show when logged in (same with register), only show logout -->
+            <mat-list-item>
+                <button mat-button (click)="globalSidenav.close()" routerLink="/login">Login</button>
+            </mat-list-item>
+            <mat-list-item>
+                <button mat-button (click)="globalSidenav.close()" routerLink="/register">Register</button>
+            </mat-list-item>
+            <!-- TODO - Add logout -->
+        </mat-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

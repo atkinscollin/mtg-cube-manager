@@ -1,0 +1,16 @@
+<div *ngIf="Cards && Cards.length > 0; else noCardsMessage">
+    <div style="width: 100%; display: inline-block;">
+        <mat-checkbox *ngIf="viewEditMode" style="float:right" [(ngModel)]="selectAll" (click)="clickSelectAll()"></mat-checkbox>
+    </div>
+    <card-row *ngFor="let card of Cards | cardFilter: FilterCards | curveSort" [Card]="card" [viewEditMode]="viewEditMode" 
+        (deleteCardEvent)="deleteCard($event)"></card-row>
+
+    <div class="full-width center" *ngIf="Cards.length > 0 && Cards.length <= FilterCards.length">
+        <p>Urza you have gone too far! You filtered it all!</p>
+        <button mat-raised-button style="display:inline-block" (click)="FilterCards = []">Reset</button>
+        <button mat-raised-button style="display:inline-block" (click)="openCardListFilterDialog()">Filter Again</button>
+    </div>
+</div>
+<ng-template #noCardsMessage>
+    There are no cards in the list yet. You can add them individually or bulk upload them.
+</ng-template>

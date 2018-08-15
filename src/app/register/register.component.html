@@ -1,0 +1,33 @@
+<form #registerForm="ngForm" fxLayout="column" fxLayoutAlign="space-around">
+    <div fxLayout="row" fxLayoutAlign="center">
+        <mat-form-field fxFlex="50%" fxFlex.lt-md="100%">
+            <input matInput [(ngModel)]="User.Email" [formControl]="emailFormControl" required placeholder="Email" name="email" type="email">
+            <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+                Invalid email
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center">
+        <mat-form-field fxFlex="50%" fxFlex.lt-md="100%">
+            <input matInput [(ngModel)]="User.Password" [formControl]="passwordFormControl" required placeholder="Password" name="password"
+                type="password">
+            <mat-error *ngIf="passwordFormControl.hasError('minlength') && !passwordFormControl.hasError('required')">
+                Password must be at least 10 characters long
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center">
+        <mat-form-field fxFlex="50%" fxFlex.lt-md="100%">
+            <input matInput [(ngModel)]="User.ConfirmPassword" [formControl]="confirmPasswordFormControl" required placeholder="Confirm Password"
+                name="confirmPassword" type="password">
+            <mat-error *ngIf="!passwordConfirmed()">
+                Confirmation does not match
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <br>
+    <div fxLayout="row" fxLayoutAlign="center">
+        <button mat-raised-button type="submit" color="primary" (click)="register()" [disabled]="!(registerForm.form.valid && emailFormControl.valid && passwordFormControl.valid && confirmPasswordFormControl.valid)"
+            fxFlex="50%" fxFlex.lt-md="100%">Register</button>
+    </div>
+</form>

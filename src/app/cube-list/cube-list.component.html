@@ -1,0 +1,65 @@
+<span style="display:flow-root;">
+    <div style="float:left;">
+        <h2 *ngIf="!viewEditMode">
+            {{CardList.Title}}
+        </h2>
+        <mat-form-field *ngIf="viewEditMode">
+            <input matInput [(ngModel)]="CardList.Title" placeholder="Cube Title" aria-label="Edit Cube Title">
+        </mat-form-field>
+    </div>
+    <button mat-icon-button style="float:right; margin:0 auto;" [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+    </button>
+</span>
+<mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="viewEditMode = !viewEditMode">
+        <mat-icon>edit</mat-icon>
+        <span>{{!viewEditMode ? 'Edit' : 'Normal'}}</span>
+    </button>
+    <button *ngIf="viewEditMode" mat-menu-item (click)="openImportDialog()">
+        <mat-icon>import_export</mat-icon>
+        <span>Import</span>
+    </button>
+    <button *ngIf="viewEditMode" mat-menu-item (click)="deleteSelectedCards()" [disabled]="!(cardsSelected().length > 0)">
+        <mat-icon>delete</mat-icon>
+        <span>Delete Selected</span>
+    </button>
+    <button mat-menu-item (click)="openFilterDialog()">
+        <mat-icon>filter_list</mat-icon>
+        <span>Filter</span>
+    </button>
+    <button mat-menu-item (click)="openOrderByDialog()">
+        <mat-icon>reorder</mat-icon>
+        <span>Order By</span>
+    </button>
+</mat-menu>
+
+<div *ngIf="!loading">
+    <form *ngIf="viewEditMode" class="add-card-form">
+        <mat-form-field class="full-width">
+            <input matInput [(ngModel)]="searchText" placeholder="Add Card" name="searchText" aria-label="Add Card" [matAutocomplete]="auto"
+                [formControl]="addCardCtrl">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCard" (optionSelected)="addCard($event.option.value)">
+                <mat-option *ngFor="let card of searchResults" [value]="card">
+                    <img style="vertical-align:middle;" src="{{card.imageUrl ? card.imageUrl : 'assets/images/card_back.jpg'}}" height="50" aria-hidden/>
+                    <span>{{card.name}}</span>
+                    <i class="ss ss-{{card.set == 'TSB' ? 'tsp' : card.set.toLowerCase()}} ss-{{card.set == 'TSB' ? 'timeshifted' : card.rarity.toLowerCase()}} ss-fw ss-grad"
+                        aria-hidden></i>
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+
+    <!-- <div *ngIf="CardList.Cards.length > 0; else noCardsMessage">
+        <card-row *ngFor="let card of CardList.Cards | cardFilter: FilterCards | curveSort" [Card]="card" [viewEditMode]="viewEditMode"></card-row>
+    </div> -->
+    <card-list [Cards]="CardList.Cards" [viewEditMode]="viewEditMode"></card-list>
+</div>
+
+<div *ngIf="loading">
+    <mat-progress-bar color="primary" mode="determinate" [value]="loadingProgress"></mat-progress-bar>
+</div>
+
+<!-- <button mat-mini-fab class="fixed-bottom-right" (click)="viewEditMode = !viewEditMode" aria-label="Toggle edit view">
+    <mat-icon>edit</mat-icon>
+</button> -->

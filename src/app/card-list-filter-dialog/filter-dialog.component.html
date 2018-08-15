@@ -1,0 +1,97 @@
+<h1 mat-dialog-title>Filter</h1>
+<div mat-dialog-content>
+
+    <mat-checkbox *ngFor="let color of colors" [(ngModel)]="color.Checked">
+        <i class="ms ms-{{color.Identity.toLowerCase()}} ms-cost"></i>
+    </mat-checkbox>
+    <mat-checkbox [(ngModel)]="multicolor" matTooltip="Include multicolor">
+        <i class="ms ms-wu ms-split ms-cost"></i>
+    </mat-checkbox>
+    <mat-radio-group [(ngModel)]="colorGate">
+        <mat-radio-button value="and">and</mat-radio-button>
+        <mat-radio-button value="or">or</mat-radio-button>
+    </mat-radio-group>
+
+    <mat-form-field class="full-width">
+        <input matInput [(ngModel)]="nameIncludes" placeholder="Name Includes..." aria-label="Card Name Includes">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <input matInput [(ngModel)]="textIncludes" placeholder="Original/Rules Text Includes..." aria-label="Card Text Includes">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+        <mat-select placeholder="Sets" [formControl]="setsFormControl" multiple>
+            <mat-select-trigger>
+                {{(setsFormControl.value && setsFormControl.value[0]) ? setsFormControl.value[0].name : ''}}
+                <span *ngIf="setsFormControl.value?.length > 1">
+                    (+{{setsFormControl.value.length - 1}} others)
+                </span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let set of Sets" [value]="set">{{set.name}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+        <mat-select placeholder="Rarity" [formControl]="raritiesFormControl" multiple>
+            <mat-select-trigger>
+                {{(raritiesFormControl.value && raritiesFormControl.value[0]) ? raritiesFormControl.value[0] : ''}}
+                <span *ngIf="raritiesFormControl.value?.length > 1">
+                    (+{{raritiesFormControl.value.length - 1}} others)
+                </span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let rarity of Rarities" [value]="rarity">{{rarity}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+        <mat-select placeholder="Types" [formControl]="typesFormControl" multiple>
+            <mat-select-trigger>
+                {{(typesFormControl.value && typesFormControl.value[0]) ? typesFormControl.value[0] : ''}}
+                <span *ngIf="typesFormControl.value?.length > 1">
+                    (+{{typesFormControl.value.length - 1}} others)
+                </span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let type of Types" [value]="type">{{type}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <mat-select placeholder="Subtypes" [formControl]="subtypesFormControl" multiple>
+            <mat-select-trigger>
+                {{(subtypesFormControl.value && subtypesFormControl.value[0]) ? subtypesFormControl.value[0] : ''}}
+                <span *ngIf="subtypesFormControl.value?.length > 1">
+                    (+{{subtypesFormControl.value.length - 1}} others)
+                </span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let subtype of Subtypes" [value]="subtype">{{subtype}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <mat-select placeholder="Supertypes" [formControl]="supertypesFormControl" multiple>
+            <mat-select-trigger>
+                {{(supertypesFormControl.value && supertypesFormControl.value[0]) ? supertypesFormControl.value[0] : ''}}
+                <span *ngIf="supertypesFormControl.value?.length > 1">
+                    (+{{supertypesFormControl.value.length - 1}} others)
+                </span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let supertype of Supertypes" [value]="supertype">{{supertype}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div class="full-width">
+        <mat-form-field style="width: 38%">
+            <mat-select [(ngModel)]="cmcOperator">
+                <mat-option *ngFor="let op of operators" [value]="op">{{op}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field style="width: 58%">
+            <input matInput type="number" [(ngModel)]="cmc" placeholder="CMC" aria-label="CMC">
+        </mat-form-field>
+    </div>
+
+    <mat-checkbox [(ngModel)]="duplicates" matTooltip="Show only duplicates">Duplicates</mat-checkbox>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="applyFilters();" tabindex="2">Filter</button>
+    <button mat-raised-button (click)="resetFilter(); closeDialog();" tabindex="1">Reset</button>
+    <button mat-raised-button (click)="closeDialog()" tabindex="-1">Cancel</button>
+</div>

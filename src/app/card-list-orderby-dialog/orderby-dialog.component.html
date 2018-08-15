@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Order By</h1>
+<div mat-dialog-content>
+    <mat-radio-group [(ngModel)]="orderby">
+        <mat-radio-button *ngFor="let type of orderbyTypes" [value]="type">
+            {{type}}
+        </mat-radio-button>
+    </mat-radio-group>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="saveAndCloseDialog();" tabindex="1">Save</button>
+    <button mat-raised-button (click)="closeDialog()" tabindex="-1">Cancel</button>
+</div>

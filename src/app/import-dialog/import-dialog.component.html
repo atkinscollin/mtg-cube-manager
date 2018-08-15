@@ -1,0 +1,41 @@
+<h1 mat-dialog-title>Import</h1>
+
+<div mat-dialog-content>
+    <div *ngIf="!loading">
+        <form class="full-width center" style="margin-bottom:5px;">
+            <input hidden id="inputFile" type="file" [accept]="acceptedFileFormats" (change)="onFileUpload($event)" name="inputFile"
+            />
+            <label class="mat-raised-button" for="inputFile">
+                <mat-icon style="vertical-align:middle">file_upload</mat-icon>
+                {{fileNameUploaded}}
+            </label>
+        </form>
+
+        <mat-form-field class="full-width">
+            <textarea matInput [(ngModel)]="textArea" placeholder="Enter cards as text" matTextareaAutosize></textarea>
+            <button mat-icon-button matSuffix (click)="convertTextToCards(textArea)" [disabled]="!textArea" aria-label="Convert to Cards">
+                <mat-icon>arrow_forward</mat-icon>
+            </button>
+            <mat-hint>Confirm with the arrow</mat-hint>
+        </mat-form-field>
+
+        <div *ngIf="Cards.length > 0">
+            <div class="full-width">
+                <mat-checkbox style="float:right" [(ngModel)]="selectAllCheckbox" (click)="selectAll()"></mat-checkbox>
+            </div>
+            <br>
+            <card-row *ngFor="let card of Cards | alphabeticalSort" [Card]="card" [viewEditMode]="true"></card-row>
+        </div>
+    </div>
+
+    <div *ngIf="loading">
+        <mat-progress-bar color="primary" mode="determinate" [value]="loadingProgress"></mat-progress-bar>
+    </div>
+</div>
+
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="import();" tabindex="1" color="primary" [disabled]="loading || Cards.length == 0">Import</button>
+    <button *ngIf="!(cardsSelected().length > 0)" mat-raised-button (click)="clear();" color="warn" tabindex="0" [disabled]="loading || Cards.length == 0">Clear</button>
+    <button *ngIf="cardsSelected().length > 0" mat-raised-button (click)="deleteSelectedCards()" color="warn" tabindex="0" [disabled]="loading">Delete</button>
+    <button mat-raised-button (click)="closeDialog()" tabindex="-1">Cancel</button>
+</div>

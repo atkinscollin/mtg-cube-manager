@@ -1,0 +1,18 @@
+<form #loginForm="ngForm" fxLayout="column" fxLayoutAlign="space-around">
+    <div fxLayout="row" fxLayoutAlign="center">
+        <mat-form-field fxFlex="50%" fxFlex.lt-md="100%">
+            <input matInput [(ngModel)]="User.Email" required placeholder="Email" name="email" type="email">
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center">
+        <mat-form-field fxFlex="50%" fxFlex.lt-md="100%">
+            <input matInput [(ngModel)]="User.Password" required placeholder="Password" name="password" type="password">
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center">
+        <button mat-raised-button type="submit" color="primary" (click)="login()" [disabled]="!loginForm.form.valid" fxFlex="50%"
+            fxFlex.lt-md="100%">
+            Login
+        </button>
+    </div>
+</form>
