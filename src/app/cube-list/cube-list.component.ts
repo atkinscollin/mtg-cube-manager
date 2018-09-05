@@ -1,5 +1,3 @@
-import { Card, Cards } from 'mtgsdk-ts';
-import { CardList } from '../models/card-list';
 import { Component, OnInit } from '@angular/core';
 import { FilterDialog } from '../card-list-filter-dialog/filter-dialog.component';
 import { FormControl } from '@angular/forms';
@@ -12,12 +10,15 @@ import { SortUtils } from '../util/sort.util';
 import { ImportDialog } from '../import-dialog/import-dialog.component';
 import { TokenService } from '../services/token.service';
 import { AccountService } from '../services/account.service';
+import { Card } from '../models/card';
+import { CardService } from '../services/card.service';
+import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'cube-list',
     templateUrl: './cube-list.component.html',
     styleUrls: ['./cube-list.component.css'],
-    providers: [TokenService, AccountService]
+    providers: [TokenService, AccountService, CardService]
 })
 
 /**
@@ -30,12 +31,13 @@ import { AccountService } from '../services/account.service';
 
 export class CubeListComponent implements OnInit {
 
-    private CardList: CardList = new CardList();
+    private Cards: Card[] = new Array<Card>();
     private FilterCards: Card[] = new Array<Card>();
 
     private searchText: string = '';
     private searchResults: Card[] = new Array<Card>();
     private selectedCard: Card;
+    private searchCardList: Card[] = new Array<Card>();
 
     private addCardCtrl: FormControl = new FormControl();
     private filteredCards: Observable<any[]>;
@@ -47,7 +49,7 @@ export class CubeListComponent implements OnInit {
     private loading: boolean = false;
     private loadingProgress: number = 0;
 
-    constructor(public dialog: MatDialog, private tokenService: TokenService, private accountService: AccountService) { }
+    constructor(public dialog: MatDialog, private tokenService: TokenService, private accountService: AccountService, private cardService: CardService) { }
 
     ngOnInit() {
         // Sets up search filter
@@ -60,40 +62,33 @@ export class CubeListComponent implements OnInit {
                 }
             });
 
-        ////this.dummyData();
-
-        //this.tokenService.getToken();
-        //this.accountService.register();
+        this.dummyData();
     }
 
     // ******** TEMP - FOR TESTING ********
     dummyData() {
+        var scope = this;
         this.loading = true;
-        Cards.where({ name: 'elf' })
-            .then(results => {
-                this.CardList.Cards = results;
-                this.loading = false;
-            }, err => console.log(err));
+
+        if (this.searchCardList === undefined || this.searchCardList.length == 0) {
+            this.cardService.getCards()
+                .then(cards => {
+                    scope.searchCardList = cards;
+                    this.Cards = scope.searchCardList.filter(card => card.Name.toLowerCase().includes('elf'));
+                    this.loading = false;
+                })
+                .catch(() => this.loading = false);
+        }
     }
 
-    private addCard(card: Card) {
+    addCard(card: Card) {
         console.log(card);
-        this.CardList.Cards.push(card);
+        this.Cards.push(card);
         this.clearSearch();
     }
 
-    private deleteCard(cardToDelete: Card) {
-        this.CardList.Cards.splice(this.CardList.Cards.findIndex(card => card == cardToDelete), 1);
-    }
-
-    private deleteSelectedCards() {
-        this.cardsSelected().forEach(card => {
-            this.deleteCard(card);
-        });
-    }
-
     private cardsSelected(): Card[] {
-        return this.CardList.Cards.filter(card => {
+        return this.Cards.filter(card => {
             let cardAny = card as any;
             return cardAny.selected;
         });
@@ -104,13 +99,23 @@ export class CubeListComponent implements OnInit {
         this.searchText = '';
     }
 
-    private displayCard(card: Card): string | Card {
-        return card ? card.name : card;
+    private deleteCard(cardToDelete: Card) {
+        this.Cards.splice(this.Cards.findIndex(card => card == cardToDelete), 1);
     }
 
-    private openImportDialog() {
+    deleteSelectedCards() {
+        this.cardsSelected().forEach(card => {
+            this.deleteCard(card);
+        });
+    }
+
+    displayCard(card: Card): string | Card {
+        return card ? card.Name : card;
+    }
+
+    openImportDialog() {
         const dialogRef = this.dialog.open(ImportDialog, {
-            data: {  }
+            data: {}
         });
 
         dialogRef.afterClosed()
@@ -118,15 +123,15 @@ export class CubeListComponent implements OnInit {
                 if (importedCards && importedCards.length > 0) {
                     importedCards.forEach(importedCard => {
                         importedCard.selected = false;
-                        this.CardList.Cards.push(importedCard);
+                        this.Cards.push(importedCard);
                     });
                 }
             });
     }
 
-    private openFilterDialog() {
+    openFilterDialog() {
         const dialogRef = this.dialog.open(FilterDialog, {
-            data: { CardList: this.CardList, FilterCards: this.FilterCards }
+            data: { Cards: this.Cards, FilterCards: this.FilterCards }
         });
 
         dialogRef.afterClosed()
@@ -135,7 +140,7 @@ export class CubeListComponent implements OnInit {
             });
     }
 
-    private openOrderByDialog() {
+    openOrderByDialog() {
         const dialogRef = this.dialog.open(OrderByDialog);
 
         dialogRef.afterClosed()
@@ -147,14 +152,27 @@ export class CubeListComponent implements OnInit {
     }
 
     private search() {
+        var scope = this;
         this.searchResults = new Array<Card>();
 
-        Cards.where({ name: this.searchText })
-            .then(results => {
-                this.searchResults = results
-                    .filter(card => card.name.toLowerCase().startsWith(this.searchText.toLowerCase()))
-                    .sort((a, b) => a.name.length - b.name.length);
-            }, err => console.log(err));
+        if (this.searchText && this.searchCardList && this.searchCardList.length > 0) {
+            this.searchResults = this.sortUtils.alphabetical(
+                    this.searchCardList
+                    .filter(card => card.Name.toLowerCase().startsWith(scope.searchText.toLowerCase())))
+                .sort((a, b) => a.Name.length - b.Name.length)
+                .slice(0, 10);
+        }
     }
 
+    populateSearchCardList() {
+        var scope = this;
+
+        if (!this.searchCardList || this.searchCardList.length == 0) {
+            this.cardService.getCards()
+                .then(cards => {
+                    scope.searchCardList = cards;
+                })
+                .catch();
+        }
+    }
 }

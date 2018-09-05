@@ -5,5 +5,6 @@
 
 export const environment = {
     production: false,
-    url: 'http://localhost:59405/'
+    url: 'http://localhost:59405/',
+    cardBackUrl: 'assets/images/card_back.jpg'
 };

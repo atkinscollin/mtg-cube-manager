@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { Card, Cards } from 'mtgsdk-ts';
+import { Card } from '../models/card';
 
 @Component({
     selector: 'import-dialog',
@@ -48,27 +48,27 @@ export class ImportDialog {
             }
 
             if (cleanedName) {
-                Cards.where({ name: cleanedName.trim(), orderBy: 'imageUrl' })
-                    .then(results => {
-                        if (results) {
-                            let cardFound = results.find(card => card.name.toLowerCase() == cleanedName);
-                            if (cardFound) {
-                                this.Cards.push(cardFound);
-                                if (!fromFile) {
-                                    this.textArea = this.textArea.replace('\n' + cardNameStringArray[i], '');
-                                }
-                            } else {
-                                if (fromFile) {
-                                    this.textArea += '\n' + cardNameStringArray[i];
-                                }
-                            }
-                        }
+                // this.Cards.where({ name: cleanedName.trim(), orderBy: 'imageUrl' })
+                //     .then(results => {
+                //         if (results) {
+                //             let cardFound = results.find(card => card.name.toLowerCase() == cleanedName);
+                //             if (cardFound) {
+                //                 this.Cards.push(cardFound);
+                //                 if (!fromFile) {
+                //                     this.textArea = this.textArea.replace('\n' + cardNameStringArray[i], '');
+                //                 }
+                //             } else {
+                //                 if (fromFile) {
+                //                     this.textArea += '\n' + cardNameStringArray[i];
+                //                 }
+                //             }
+                //         }
 
-                        this.loadingProgress += 100 / cardNameStringArray.length;
-                        if (i + 1 == cardNameStringArray.length) {
-                            this.loading = false;
-                        }
-                    }, err => console.log(err));
+                //         this.loadingProgress += 100 / cardNameStringArray.length;
+                //         if (i + 1 == cardNameStringArray.length) {
+                //             this.loading = false;
+                //         }
+                //     }, err => console.log(err));
             } else {
                 if (i + 1 == cardNameStringArray.length) {
                     this.loading = false;
@@ -108,9 +108,9 @@ export class ImportDialog {
             fileReader.onload = function (e) {
                 if (fileReader.result) {
                     if (file.name.endsWith('.dec') || file.name.endsWith('.csv')) {
-                        $scope.convertTextToCards(fileReader.result.substring(fileReader.result.indexOf('\n')));
+                        $scope.convertTextToCards(fileReader.result.toString().substring(fileReader.result.toString().indexOf('\n')));
                     } else {
-                        $scope.convertTextToCards(fileReader.result, true);
+                        $scope.convertTextToCards(fileReader.result.toString(), true);
                     }
                 }
                 fileReader.abort();

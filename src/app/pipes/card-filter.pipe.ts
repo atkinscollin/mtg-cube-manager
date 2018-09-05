@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Card } from 'mtgsdk-ts';
+import { Card } from '../models/card';
 
 @Pipe({
     name: 'cardFilter',

@@ -1,1 +1,2 @@
-<img *ngIf="Card" style="vertical-align:middle;" src="{{Card.imageUrl ? Card.imageUrl : 'assets/images/card_back.jpg'}}" aria-hidden/>
+<!-- <img *ngIf="Card" style="vertical-align:middle;" src="{{Card.imageUrl ? Card.imageUrl : 'assets/images/card_back.jpg'}}" aria-hidden/> -->
+<img style="vertical-align:middle;" [src]="getScryfallImg(card)" (error)="onFailedToFindImage($event)" aria-hidden width="100%"/>

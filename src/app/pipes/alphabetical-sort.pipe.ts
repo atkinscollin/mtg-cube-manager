@@ -8,7 +8,7 @@ import { SortUtils } from '../util/sort.util';
 
 export class AlphabeticalSortPipe implements PipeTransform {
     transform(array: any[]): any[] {
-        if (!array) {
+        if (!array || array.length <= 1) {
             return array;
         }
         

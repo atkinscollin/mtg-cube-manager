@@ -26,6 +26,7 @@ import { CardFilterPipe } from './pipes/card-filter.pipe';
 import { CurveSortPipe } from './pipes/curve-sort.pipe';
 import { RegisterComponent } from './register/register.component';
 import { TokenService } from './services/token.service';
+import { HttpClientModule }    from '@angular/common/http';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -62,6 +63,7 @@ const appRoutes: Routes = [
         BrowserModule,
         FlexLayoutModule,
         HttpModule,
+        HttpClientModule,
         BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,

@@ -1,19 +1,19 @@
-import { Card } from "mtgsdk-ts";
+import { Card } from "../models/card";
 
 export class CardUtils {
     constructor() { }
 
     getCmc(card: Card) {
-        if (card.cmc >= 25) {
+        if (card.Cmc >= 25) {
             return 50;
         } else if (this.isXSpell(card)) {
-            return 20 + card.cmc;
+            return 20 + card.Cmc;
         } else {
-            return card.cmc;
+            return card.Cmc;
         }
     }
 
     isXSpell(card: Card) {
-        return card.manaCost && card.manaCost.includes('X');
+        return card.ManaCost && card.ManaCost.includes('X');
     }
 }

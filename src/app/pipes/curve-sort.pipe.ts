@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Card } from 'mtgsdk-ts';
 import { Color } from '../models/color';
 import { CardUtils } from '../util/card.util';
+import { Card } from '../models/card';
 
 @Pipe({
     name: 'curveSort',
@@ -31,7 +31,7 @@ export class CurveSortPipe implements PipeTransform {
     }
 
     private getAlphabeticalWinner(a: Card, b: Card) {
-        var nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
+        var nameA = a.Name.toLowerCase(), nameB = b.Name.toLowerCase();
         if (nameA < nameB) {
             return 1;
         }
@@ -42,25 +42,25 @@ export class CurveSortPipe implements PipeTransform {
     }
 
     private getColorStrength(card: Card) {
-        if (!card.colors) {
-            if (card.type && card.types.some(type => type == 'Land')) {
+        if (!card.Colors) {
+            if (card.TypeLine && card.TypeLine.includes('Land')) {//.some(type => type == 'Land')) {
                 return 1;
-            } else if (card.type && card.types.some(type => type == 'Artifact')) {
+            } else if (card.TypeLine && card.TypeLine.includes('Artifact')) {
                 return 2;
             } else {
                 return 3;
             }
-        } else if (card.colors.length >= 2) {
+        } else if (card.Colors.length >= 2) {
             return 4;
-        } else if (card.colors.some(color => color.toString().toLowerCase() == 'green')) {
+        } else if (card.Colors.includes('G')) {
             return 5;
-        } else if (card.colors.some(color => color.toString().toLowerCase() == 'red')) {
+        } else if (card.Colors.includes('R')) {
             return 6;
-        } else if (card.colors.some(color => color.toString().toLowerCase() == 'black')) {
+        } else if (card.Colors.includes('B')) {
             return 7;
-        } else if (card.colors.some(color => color.toString().toLowerCase() == 'blue')) {
+        } else if (card.Colors.includes('U')) {
             return 8;
-        } else if (card.colors.some(color => color.toString().toLowerCase() == 'white')) {
+        } else if (card.Colors.includes('W')) {
             return 9;
         } else {
             return 0;
