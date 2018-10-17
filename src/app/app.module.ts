@@ -27,11 +27,14 @@ import { CurveSortPipe } from './pipes/curve-sort.pipe';
 import { RegisterComponent } from './register/register.component';
 import { TokenService } from './services/token.service';
 import { HttpClientModule }    from '@angular/common/http';
+import { CreateCubeDialog } from './create-cube-dialog/create-cube-dialog.component';
+import { EditCubeCardDialog } from './edit-cube-card-modal/edit-cube-card-modal.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'register', component: RegisterComponent },
     { path: 'login', component: LoginComponent },
+    { path: 'cubeList/:id', component: CubeListComponent },
     { path: 'admin', component: AdminComponent }, // TODO - Add AuthGaurd
     { path: '**', component: BadPathComponent } // Wildcard route, if none match
 ];
@@ -55,6 +58,8 @@ const appRoutes: Routes = [
         RegisterComponent,
         LoginComponent,
         AdminComponent,
+        CreateCubeDialog,
+        EditCubeCardDialog
     ],
     imports: [
         RouterModule.forRoot(
@@ -91,7 +96,9 @@ const appRoutes: Routes = [
         CardImageDialog,
         FilterDialog,
         OrderByDialog,
-        ImportDialog
+        ImportDialog,
+        CreateCubeDialog,
+        EditCubeCardDialog
     ],
     providers: [
         AuthGuard,

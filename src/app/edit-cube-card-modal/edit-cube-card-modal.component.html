@@ -1,0 +1,33 @@
+<h1 mat-dialog-title>Edit Cube Card</h1>
+<div mat-dialog-content>
+    <mat-form-field class="full-width">
+        <mat-select placeholder="Custom Color Identity" [(ngModel)]="CubeCard.CustomColorIdentity">
+            <mat-option *ngFor="let colorIdentity of ColorIdentities" [value]="colorIdentity">{{colorIdentity}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+        <input matInput [(ngModel)]="CubeCard.CustomCmc"
+            placeholder="Custom Cmc" name="customCmcInput" [formControl]="customCmcControl"
+            type="number" min="0" max="100">
+        <mat-error>Cmc must be between 0 and 100.</mat-error>
+    </mat-form-field>
+
+    <mat-checkbox [(ngModel)]="CubeCard.IsFoil">Foil</mat-checkbox>
+    <mat-checkbox [(ngModel)]="CubeCard.IsAltered">Altered</mat-checkbox>
+    <mat-radio-group [(ngModel)]="colorGate">
+        <mat-radio-button value="and">and</mat-radio-button>
+        <mat-radio-button value="or">or</mat-radio-button>
+    </mat-radio-group>
+
+    <mat-form-field class="full-width">
+        <input matInput [(ngModel)]="nameIncludes" placeholder="Name Includes..." aria-label="Card Name Includes">
+    </mat-form-field>
+    <mat-form-field class="full-width">
+        <input matInput [(ngModel)]="textIncludes" placeholder="Original/Rules Text Includes..." aria-label="Card Text Includes">
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="save(); closeDialog();" tabindex="1">Save</button>
+    <button mat-raised-button (click)="closeDialog()" tabindex="-1">Cancel</button>
+</div>

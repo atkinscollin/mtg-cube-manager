@@ -43,7 +43,7 @@ export class CurveSortPipe implements PipeTransform {
 
     private getColorStrength(card: Card) {
         if (!card.Colors) {
-            if (card.TypeLine && card.TypeLine.includes('Land')) {//.some(type => type == 'Land')) {
+            if (card.TypeLine && card.TypeLine.includes('Land')) {
                 return 1;
             } else if (card.TypeLine && card.TypeLine.includes('Artifact')) {
                 return 2;

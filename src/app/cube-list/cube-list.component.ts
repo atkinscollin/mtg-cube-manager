@@ -13,12 +13,19 @@ import { AccountService } from '../services/account.service';
 import { Card } from '../models/card';
 import { CardService } from '../services/card.service';
 import { environment } from '../../environments/environment';
+import { CurveSortPipe } from '../pipes/curve-sort.pipe';
+import { Cube } from '../models/cube';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
+import { CubeService } from '../services/cube.service';
+import { CubeCardService } from '../services/cube-card.service';
+import { CubeCard } from '../models/cube-card';
 
 @Component({
     selector: 'cube-list',
     templateUrl: './cube-list.component.html',
     styleUrls: ['./cube-list.component.css'],
-    providers: [TokenService, AccountService, CardService]
+    providers: [TokenService, AccountService, CardService, CubeService, CubeCardService]
 })
 
 /**
@@ -31,25 +38,28 @@ import { environment } from '../../environments/environment';
 
 export class CubeListComponent implements OnInit {
 
+    Cube: Cube = new Cube();
+
     private Cards: Card[] = new Array<Card>();
     private FilterCards: Card[] = new Array<Card>();
 
     private searchText: string = '';
-    private searchResults: Card[] = new Array<Card>();
-    private selectedCard: Card;
+    searchResults: Card[] = new Array<Card>();
+    selectedCard: Card;
     private searchCardList: Card[] = new Array<Card>();
 
     private addCardCtrl: FormControl = new FormControl();
-    private filteredCards: Observable<any[]>;
+    filteredCards: Observable<any[]>;
 
-    private viewEditMode: boolean = false;
+    viewEditMode: boolean = false;
 
     private sortUtils: SortUtils = new SortUtils();
 
     private loading: boolean = false;
-    private loadingProgress: number = 0;
+    loadingProgress: number = 0;
 
-    constructor(public dialog: MatDialog, private tokenService: TokenService, private accountService: AccountService, private cardService: CardService) { }
+    constructor(public dialog: MatDialog, private tokenService: TokenService, private accountService: AccountService, private cardService: CardService,
+        private route: ActivatedRoute, private cubeService: CubeService, private cubeCardService: CubeCardService) { }
 
     ngOnInit() {
         // Sets up search filter
@@ -62,7 +72,11 @@ export class CubeListComponent implements OnInit {
                 }
             });
 
-        this.dummyData();
+        let id = parseInt(this.route.snapshot.paramMap.get('id'));
+
+        this.cubeService.getCubeByCubeId(id).then(cube => this.Cube = cube);
+
+        //this.dummyData();
     }
 
     // ******** TEMP - FOR TESTING ********
@@ -83,8 +97,20 @@ export class CubeListComponent implements OnInit {
 
     addCard(card: Card) {
         console.log(card);
-        this.Cards.push(card);
-        this.clearSearch();
+        this.loading = true;
+
+        var newCubeCard: CubeCard = new CubeCard(this.Cube.CubeId, card.Id);
+        //this.Cards.push(card);
+        this.cubeCardService.createCubeCard(newCubeCard)
+            .then(() => {
+                this.Cards.push(card);
+                this.clearSearch();
+                this.loading = false;
+            })
+            .catch(() => {
+                this.clearSearch();
+                this.loading = false
+            });        
     }
 
     private cardsSelected(): Card[] {
@@ -147,6 +173,7 @@ export class CubeListComponent implements OnInit {
             .subscribe(choice => {
                 if (choice) {
                     console.log(choice);
+                    // TODO 
                 }
             });
     }
@@ -157,7 +184,7 @@ export class CubeListComponent implements OnInit {
 
         if (this.searchText && this.searchCardList && this.searchCardList.length > 0) {
             this.searchResults = this.sortUtils.alphabetical(
-                    this.searchCardList
+                this.searchCardList
                     .filter(card => card.Name.toLowerCase().startsWith(scope.searchText.toLowerCase())))
                 .sort((a, b) => a.Name.length - b.Name.length)
                 .slice(0, 10);

@@ -1,11 +1,11 @@
 <span style="display:flow-root;">
     <div style="float:left;">
-        <!-- <h2 *ngIf="!viewEditMode">
-            {{CardList.Title}}
+        <h2 *ngIf="!viewEditMode">
+            {{Cube.CubeName}}
         </h2>
         <mat-form-field *ngIf="viewEditMode">
-            <input matInput [(ngModel)]="CardList.Title" placeholder="Cube Title" aria-label="Edit Cube Title">
-        </mat-form-field> -->
+            <input matInput [(ngModel)]="Cube.CubeName" placeholder="Cube Title" aria-label="Edit Cube Title">
+        </mat-form-field>
     </div>
     <button mat-icon-button style="float:right; margin:0 auto;" [matMenuTriggerFor]="menu">
         <mat-icon>more_vert</mat-icon>
@@ -36,6 +36,7 @@
 
 <div *ngIf="!loading">
     <form *ngIf="viewEditMode" class="add-card-form">
+        <!-- TODO - move to it's own component -->
         <mat-form-field class="full-width">
             <input matInput [(ngModel)]="searchText" placeholder="Add Card" name="searchText" aria-label="Add Card" [matAutocomplete]="auto"
                 [formControl]="addCardCtrl">

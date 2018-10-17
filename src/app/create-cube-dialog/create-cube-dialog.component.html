@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Create Cube</h1>
+<div mat-dialog-content>
+    <mat-form-field class="full-width">
+        <input matInput [(ngModel)]="Cube.CubeName" placeholder="Name" aria-label="Name">
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="create();" tabindex="1">Create</button>
+    <button mat-raised-button (click)="close()" tabindex="-1">Cancel</button>
+</div>

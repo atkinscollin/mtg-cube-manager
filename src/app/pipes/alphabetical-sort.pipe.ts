@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { SortUtils } from '../util/sort.util';
+import { Card } from '../models/card';
 
 @Pipe({
     name: 'alphabeticalSort',
@@ -7,11 +8,11 @@ import { SortUtils } from '../util/sort.util';
 })
 
 export class AlphabeticalSortPipe implements PipeTransform {
-    transform(array: any[]): any[] {
-        if (!array || array.length <= 1) {
-            return array;
+    transform(cards: Card[]): Card[] {
+        if (!cards || cards.length <= 1) {
+            return cards;
         }
         
-        return new SortUtils().alphabetical(array);
+        return new SortUtils().alphabetical(cards);
     }
 }
