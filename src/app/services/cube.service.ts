@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Cube } from '../models/cube';
+import { ImageUris } from '../models/image-uris';
+import { RelatedUris } from '../models/related-uris';
 
 // const httpOptions = {
 //     headers: new HttpHeaders({

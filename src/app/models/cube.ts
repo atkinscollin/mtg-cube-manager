@@ -1,11 +1,16 @@
 import { User } from "./user";
+import { CubeCard } from "./cube-card";
 
 export class Cube {
     CubeId: number;
     CubeName: string;
-    CreatedById: User;
+    CreatedById: string;
     CreatedDate: Date;
     UpdatedDate: Date;
 
-    constructor() { }
+    CubeCards: CubeCard[];
+
+    constructor() { 
+        this.CubeCards = new Array<CubeCard>();
+    }
 }

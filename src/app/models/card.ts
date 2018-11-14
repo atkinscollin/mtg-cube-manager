@@ -75,7 +75,9 @@ export class Card {
     // Usd: string;
     // Watermark: string;
 
-    constructor() { }
+    constructor() { 
+        this.ImageUris = new ImageUris();
+    }
 
     convertFromJsonCard(jsonCard: JsonCard) {
         this.Id = jsonCard.id;

@@ -52,8 +52,14 @@
         </mat-form-field>
     </form>
 
-    <div *ngIf="Cards.length > 0; else noCardsMessage">
-        <card-row *ngFor="let card of Cards | cardFilter: FilterCards | curveSort" [Card]="card" [viewEditMode]="viewEditMode"></card-row>
+    <div *ngIf="Cube && Cube.CubeCards && Cube.CubeCards.length > 0; else noCardsMessage">
+        <div *ngFor="let card of Cube.CubeCards">
+        <!-- <card-row *ngFor="let card of Cube.CubeCards | cardFilter: FilterCards | curveSort" [Card]="card" [viewEditMode]="viewEditMode"></card-row> -->
+            <img style="vertical-align:middle;" [src]="card.Card.ImageUriSmall" onError="this.src=environment.cardBackUrl" height="50" aria-hidden/>
+            <span>{{card.Card.Name}}</span>
+            <i class="ss ss-{{card.Card.SetCode == 'tsb' ? 'tsp' : card.Card.Set.toLowerCase()}} ss-{{card.Card.Set == 'tsb' ? 'timeshifted' : card.Card.Rarity.toLowerCase()}} ss-fw ss-grad"
+                aria-hidden></i>
+        </div>
     </div>
 </div>
 

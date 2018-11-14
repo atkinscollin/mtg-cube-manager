@@ -40,7 +40,7 @@ export class CubeListComponent implements OnInit {
 
     Cube: Cube = new Cube();
 
-    private Cards: Card[] = new Array<Card>();
+    //private Cards: Card[] = new Array<Card>();
     private FilterCards: Card[] = new Array<Card>();
 
     private searchText: string = '';
@@ -74,26 +74,27 @@ export class CubeListComponent implements OnInit {
 
         let id = parseInt(this.route.snapshot.paramMap.get('id'));
 
-        this.cubeService.getCubeByCubeId(id).then(cube => this.Cube = cube);
+        this.cubeService.getCubeByCubeId(id).then(cube => {this.Cube = cube; console.log(this.Cube.CubeCards); });
 
+        console.log(this.Cube.CubeCards);
         //this.dummyData();
     }
 
     // ******** TEMP - FOR TESTING ********
-    dummyData() {
-        var scope = this;
-        this.loading = true;
+    // dummyData() {
+    //     var scope = this;
+    //     this.loading = true;
 
-        if (this.searchCardList === undefined || this.searchCardList.length == 0) {
-            this.cardService.getCards()
-                .then(cards => {
-                    scope.searchCardList = cards;
-                    this.Cards = scope.searchCardList.filter(card => card.Name.toLowerCase().includes('elf'));
-                    this.loading = false;
-                })
-                .catch(() => this.loading = false);
-        }
-    }
+    //     if (this.searchCardList === undefined || this.searchCardList.length == 0) {
+    //         this.cardService.getCards()
+    //             .then(cards => {
+    //                 scope.searchCardList = cards;
+    //                 this.Cards = scope.searchCardList.filter(card => card.Name.toLowerCase().includes('elf'));
+    //                 this.loading = false;
+    //             })
+    //             .catch(() => this.loading = false);
+    //     }
+    // }
 
     addCard(card: Card) {
         console.log(card);
@@ -103,7 +104,8 @@ export class CubeListComponent implements OnInit {
         //this.Cards.push(card);
         this.cubeCardService.createCubeCard(newCubeCard)
             .then(() => {
-                this.Cards.push(card);
+                //this.Cards.push(card);
+                this.cubeService.getCubeByCubeId(1).then(cube => this.Cube = cube);
                 this.clearSearch();
                 this.loading = false;
             })
@@ -113,8 +115,8 @@ export class CubeListComponent implements OnInit {
             });        
     }
 
-    private cardsSelected(): Card[] {
-        return this.Cards.filter(card => {
+    private cardsSelected(): CubeCard[] {
+        return this.Cube.CubeCards.filter(card => {
             let cardAny = card as any;
             return cardAny.selected;
         });
@@ -125,8 +127,8 @@ export class CubeListComponent implements OnInit {
         this.searchText = '';
     }
 
-    private deleteCard(cardToDelete: Card) {
-        this.Cards.splice(this.Cards.findIndex(card => card == cardToDelete), 1);
+    private deleteCard(cardToDelete: CubeCard) {
+        this.Cube.CubeCards.splice(this.Cube.CubeCards.findIndex(card => card == cardToDelete), 1);
     }
 
     deleteSelectedCards() {
@@ -149,7 +151,7 @@ export class CubeListComponent implements OnInit {
                 if (importedCards && importedCards.length > 0) {
                     importedCards.forEach(importedCard => {
                         importedCard.selected = false;
-                        this.Cards.push(importedCard);
+                        this.Cube.CubeCards.push(importedCard);
                     });
                 }
             });
@@ -157,7 +159,7 @@ export class CubeListComponent implements OnInit {
 
     openFilterDialog() {
         const dialogRef = this.dialog.open(FilterDialog, {
-            data: { Cards: this.Cards, FilterCards: this.FilterCards }
+            data: { Cards: this.Cube.CubeCards, FilterCards: this.FilterCards }
         });
 
         dialogRef.afterClosed()

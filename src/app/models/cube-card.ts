@@ -1,11 +1,11 @@
 import { Card } from "./card";
 import { Cube } from "./cube";
 
-export class CubeCard// extends Card
+export class CubeCard
 {
     CubeCardId: number;
     CubeId: number;
-    CardId: string; // TODO - remove
+    CardId: string;
     CustomColorIdentity: string;
     CustomCmc: number;
     IsFoil: boolean;
@@ -15,9 +15,12 @@ export class CubeCard// extends Card
     Cube: Cube;
 
     constructor(cubeId: number = null, cardId: string = null) { 
-        //super();
-
         this.CubeId = cubeId;
         this.CardId = cardId;
+        this.IsFoil = false;
+        this.IsAltered = false;
+
+        this.Cube = new Cube();
+        this.Card = new Card();
     }
 }
