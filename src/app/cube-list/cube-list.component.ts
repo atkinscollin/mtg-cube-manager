@@ -1,22 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FilterDialog } from '../card-list-filter-dialog/filter-dialog.component';
 import { FormControl } from '@angular/forms';
-import { MatDialog } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
+import { MatDialog } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
 import { OrderByDialog } from '../card-list-orderby-dialog/orderby-dialog.component';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/startWith';
 import { SortUtils } from '../util/sort.util';
 import { ImportDialog } from '../import-dialog/import-dialog.component';
 import { TokenService } from '../services/token.service';
 import { AccountService } from '../services/account.service';
 import { Card } from '../models/card';
 import { CardService } from '../services/card.service';
-import { environment } from '../../environments/environment';
-import { CurveSortPipe } from '../pipes/curve-sort.pipe';
 import { Cube } from '../models/cube';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 import { CubeService } from '../services/cube.service';
 import { CubeCardService } from '../services/cube-card.service';
 import { CubeCard } from '../models/cube-card';
@@ -43,7 +38,7 @@ export class CubeListComponent implements OnInit {
     //private Cards: Card[] = new Array<Card>();
     private FilterCards: Card[] = new Array<Card>();
 
-    private searchText: string = '';
+    private searchText = '';
     searchResults: Card[] = new Array<Card>();
     selectedCard: Card;
     private searchCardList: Card[] = new Array<Card>();
@@ -51,14 +46,13 @@ export class CubeListComponent implements OnInit {
     private addCardCtrl: FormControl = new FormControl();
     filteredCards: Observable<any[]>;
 
-    viewEditMode: boolean = false;
+    viewEditMode = false;
 
     private sortUtils: SortUtils = new SortUtils();
 
-    private loading: boolean = false;
-    loadingProgress: number = 0;
+    loadingProgress = 0;
 
-    constructor(public dialog: MatDialog, private tokenService: TokenService, private accountService: AccountService, private cardService: CardService,
+    constructor(public dialog: MatDialog, private cardService: CardService,
         private route: ActivatedRoute, private cubeService: CubeService, private cubeCardService: CubeCardService) { }
 
     ngOnInit() {
@@ -72,9 +66,9 @@ export class CubeListComponent implements OnInit {
                 }
             });
 
-        let id = parseInt(this.route.snapshot.paramMap.get('id'));
+        const id = parseInt(this.route.snapshot.paramMap.get('id'));
 
-        this.cubeService.getCubeByCubeId(id).then(cube => {this.Cube = cube; console.log(this.Cube.CubeCards); });
+        this.cubeService.getCubeByCubeId(id).then(cube => { this.Cube = cube; console.log(this.Cube.CubeCards); });
 
         console.log(this.Cube.CubeCards);
         //this.dummyData();
@@ -98,26 +92,23 @@ export class CubeListComponent implements OnInit {
 
     addCard(card: Card) {
         console.log(card);
-        this.loading = true;
 
-        var newCubeCard: CubeCard = new CubeCard(this.Cube.CubeId, card.Id);
+        let newCubeCard: CubeCard = new CubeCard(this.Cube.CubeId, card.Id);
         //this.Cards.push(card);
         this.cubeCardService.createCubeCard(newCubeCard)
             .then(() => {
                 //this.Cards.push(card);
                 this.cubeService.getCubeByCubeId(1).then(cube => this.Cube = cube);
                 this.clearSearch();
-                this.loading = false;
             })
             .catch(() => {
                 this.clearSearch();
-                this.loading = false
-            });        
+            });
     }
 
     private cardsSelected(): CubeCard[] {
         return this.Cube.CubeCards.filter(card => {
-            let cardAny = card as any;
+            const cardAny = card as any;
             return cardAny.selected;
         });
     }
@@ -175,13 +166,13 @@ export class CubeListComponent implements OnInit {
             .subscribe(choice => {
                 if (choice) {
                     console.log(choice);
-                    // TODO 
+                    // TODO
                 }
             });
     }
 
     private search() {
-        var scope = this;
+        let scope = this;
         this.searchResults = new Array<Card>();
 
         if (this.searchText && this.searchCardList && this.searchCardList.length > 0) {
@@ -194,7 +185,7 @@ export class CubeListComponent implements OnInit {
     }
 
     populateSearchCardList() {
-        var scope = this;
+        let scope = this;
 
         if (!this.searchCardList || this.searchCardList.length == 0) {
             this.cardService.getCards()

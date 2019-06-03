@@ -4,7 +4,6 @@ import { User } from '../models/user';
 import { AccountService } from '../services/account.service';
 import { SnackBarUtil } from '../util/snackbar.util';
 import { Router } from '@angular/router';
-import { Validator } from '@angular/forms/src/directives/validators';
 
 @Component({
     selector: 'register',

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { MatSidenav } from '@angular/material';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
     selector: 'app-root',
@@ -8,7 +8,7 @@ import { MatSidenav } from '@angular/material';
 })
 
 export class AppComponent {
-    @ViewChild('globalSidenav') globalSidenav: MatSidenav;
+    @ViewChild('globalSidenav', { static: true }) globalSidenav: MatSidenav;
 
     toggleGlobalSidenav() {
         this.globalSidenav.toggle();

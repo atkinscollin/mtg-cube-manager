@@ -18,14 +18,14 @@ export class CardListComponent implements OnInit {
 
     ngOnInit() { }
 
-    private clickSelectAll() {
+    clickSelectAll() {
         this.Cards.forEach(card => {
             let cardAny = card as any;
             cardAny.selected = !this.selectAll;
         });
     }
 
-    private deleteCard(cardToDelete: Card) {console.log(cardToDelete);
+    deleteCard(cardToDelete: Card) {console.log(cardToDelete);
         this.Cards.splice(this.Cards.findIndex(card => card == cardToDelete), 1);
     }
 

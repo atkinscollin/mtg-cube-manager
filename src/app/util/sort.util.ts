@@ -4,7 +4,7 @@ export class SortUtils {
     alphabetical(array: any[]): any[] {
         if (array && array.length > 1 && array[0] && array[0].Name) {
             return array.sort((a, b) => {
-                var nameA = a.Name.toLowerCase(), nameB = b.Name.toLowerCase();
+                let nameA = a.Name.toLowerCase(), nameB = b.Name.toLowerCase();
                 if (nameA < nameB)
                     return -1;
                 if (nameA > nameB)
@@ -16,7 +16,4 @@ export class SortUtils {
             return array;
         }
     }
-
-    
-
 }

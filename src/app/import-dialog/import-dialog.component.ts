@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Card } from '../models/card';
 
 @Component({
@@ -9,7 +9,7 @@ import { Card } from '../models/card';
 
 /**
  * TODO
- * - 
+ * -
  */
 
 export class ImportDialog {
@@ -17,12 +17,12 @@ export class ImportDialog {
     private Cards: Card[] = new Array<Card>();
     private FilterCards: Card[] = new Array<Card>();
 
-    private textArea: string = '';
+    private textArea = '';
     private acceptedFileFormats: string[] = ['.txt', '.csv', '.dec'];
-    private fileNameUploaded: string = 'Import From File';
-    private loading: boolean = false;
-    private loadingProgress: number = 0;
-    private selectAllCheckbox: boolean = false;
+    private fileNameUploaded = 'Import From File';
+    private loading = false;
+    private loadingProgress = 0;
+    private selectAllCheckbox = false;
 
     constructor(private dialogRef: MatDialogRef<ImportDialog>, @Inject(MAT_DIALOG_DATA) data: any) { }
 
@@ -38,11 +38,11 @@ export class ImportDialog {
     private convertTextToCards(cardsAsText: string, fromFile: boolean = false) {
         this.loadingProgress = 0;
         this.loading = true;
-        var cardNameStringArray: string[] = cardsAsText.trim().split('\n');
+        let cardNameStringArray: string[] = cardsAsText.trim().split('\n');
 
         for (let i = 0; i < cardNameStringArray.length; i++) {
 
-            let cleanedName: string = cardNameStringArray[i].normalize().toLowerCase().replace(/[^\x00-\x7F]/g, "").trim();
+            let cleanedName: string = cardNameStringArray[i].normalize().toLowerCase().replace(/[^\x00-\x7F]/g, '').trim();
             if (cardNameStringArray[i].match('^[0-9] ') || cardNameStringArray[i].match('^[0-9]x ')) {
                 cleanedName = cleanedName.substring(cleanedName.match('^[0-9] ') ? 2 : 3);
             }
@@ -76,7 +76,7 @@ export class ImportDialog {
             }
 
 
-        };
+        }
     }
 
     private deleteCard(cardToDelete: Card) {
@@ -91,18 +91,18 @@ export class ImportDialog {
 
     private cardsSelected(): Card[] {
         return this.Cards.filter(card => {
-            let cardAny = card as any;
+            const cardAny = card as any;
             return cardAny.selected;
         });
     }
 
     private onFileUpload($event) {
-        let $scope = this;
-        let file: File = $event.target.files[0];
+        const $scope = this;
+        const file: File = $event.target.files[0];
         if (file && (file.name && this.acceptedFileFormats.find(ff => file.name.endsWith(ff)))) {
             this.fileNameUploaded = file.name.length > 26 ? (file.name.substr(0, 23) + '...') : file.name;
 
-            let fileReader: FileReader = new FileReader();
+            const fileReader: FileReader = new FileReader();
 
             fileReader.readAsText(file);
             fileReader.onload = function (e) {
@@ -114,19 +114,19 @@ export class ImportDialog {
                     }
                 }
                 fileReader.abort();
-            }
+            };
 
         }
     }
 
     private import() {
-        let cards: Card[] = this.cardsSelected().length > 0 ? this.cardsSelected() : this.Cards;
+        const cards: Card[] = this.cardsSelected().length > 0 ? this.cardsSelected() : this.Cards;
         this.dialogRef.close(cards);
     }
 
     private selectAll() {
         this.Cards.map(card => {
-            let cardAny = card as any;
+            const cardAny = card as any;
             return cardAny.selected = !this.selectAllCheckbox;
         });
     }

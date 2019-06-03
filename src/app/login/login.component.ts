@@ -18,11 +18,12 @@ export class LoginComponent implements OnInit {
 
     ngOnInit() { }
 
-    private login() {
+    login() {
         this.tokenService.getToken(this.User.Email, this.User.Password)
-            .subscribe(authToken => {
+            .then(authToken => {
                 this.router.navigate(['/']);
-            }, err => console.log('invalid login'));
+            })
+            .catch(err => console.log('invalid login'));
     }
 
 }

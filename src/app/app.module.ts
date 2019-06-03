@@ -1,8 +1,26 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDialogModule, MatFormFieldModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule, MatOptionModule, MatProgressBarModule, MatRadioModule, MatSelectModule, MatSidenavModule, MatSlideToggleModule, MatSnackBarModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatOptionModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
@@ -16,7 +34,9 @@ import { FilterDialog } from './card-list-filter-dialog/filter-dialog.component'
 import { OrderByDialog } from './card-list-orderby-dialog/orderby-dialog.component';
 import { CardListComponent } from './card-list/card-list.component';
 import { CardRowComponent } from './card-row/card-row.component';
+import { CreateCubeDialog } from './create-cube-dialog/create-cube-dialog.component';
 import { CubeListComponent } from './cube-list/cube-list.component';
+import { EditCubeCardDialog } from './edit-cube-card-modal/edit-cube-card-modal.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { ImportDialog } from './import-dialog/import-dialog.component';
@@ -26,9 +46,6 @@ import { CardFilterPipe } from './pipes/card-filter.pipe';
 import { CurveSortPipe } from './pipes/curve-sort.pipe';
 import { RegisterComponent } from './register/register.component';
 import { TokenService } from './services/token.service';
-import { HttpClientModule }    from '@angular/common/http';
-import { CreateCubeDialog } from './create-cube-dialog/create-cube-dialog.component';
-import { EditCubeCardDialog } from './edit-cube-card-modal/edit-cube-card-modal.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -67,9 +84,8 @@ const appRoutes: Routes = [
         ),
         BrowserModule,
         FlexLayoutModule,
-        HttpModule,
-        HttpClientModule,
         BrowserAnimationsModule,
+        HttpClientModule,
         FormsModule,
         ReactiveFormsModule,
         MatToolbarModule,

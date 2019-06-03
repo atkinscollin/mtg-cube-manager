@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Cube } from '../models/cube';
 
 @Component({
@@ -10,7 +10,7 @@ import { Cube } from '../models/cube';
 export class CreateCubeDialog {
 
     Cube: Cube = new Cube();
-    
+
     constructor(public dialogRef: MatDialogRef<CreateCubeDialog>, @Inject(MAT_DIALOG_DATA) data: any) { }
 
     create() {

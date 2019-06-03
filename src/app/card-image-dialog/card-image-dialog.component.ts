@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Card } from '../models/card';
 import { environment } from '../../environments/environment';
 import { ScryfallService } from '../services/scryfall.service';
@@ -19,9 +19,8 @@ export class CardImageDialog {
         this.Card = data.Card;
     }
 
-    
     getScryfallImg(): string {
-        return this.scryFallImageService.getScryfallImageUrl(this.Card, ScryfallImageType.Normal)
+        return this.scryFallImageService.getScryfallImageUrl(this.Card, ScryfallImageType.Normal);
     }
 
     onFailedToFindImage(event) {

@@ -1,8 +1,7 @@
 import { CardImageDialog } from '../card-image-dialog/card-image-dialog.component';
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Card } from '../models/card';
-import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'card-row',

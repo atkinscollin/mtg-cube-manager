@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CubeService } from '../services/cube.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { CreateCubeDialog } from '../create-cube-dialog/create-cube-dialog.component';
 import { Cube } from '../models/cube';
 import { SnackBarUtil } from '../util/snackbar.util';
@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
 
     constructor(public dialog: MatDialog, private snackbarutil: SnackBarUtil, private cubeService: CubeService) { }
 
-    ngOnInit() { 
+    ngOnInit() {
         this.getCubesOfCurrentUser();
     }
 
@@ -32,24 +32,24 @@ export class HomeComponent implements OnInit {
                 if (cube) {
                     this.cubeService.createCube(cube)
                         .then(() => {
-                            this.snackbarutil.open((cube as Cube).CubeName  + " created successfully.");
+                            this.snackbarutil.open((cube as Cube).CubeName  + ' created successfully.');
                         })
                         .catch(() => {
-                            this.snackbarutil.open("Failed to create cube.");
+                            this.snackbarutil.open('Failed to create cube.');
                         });
                 }
             });
     }
 
     getCubesOfCurrentUser() {
-        this.cubeService.getCubesByUserId("8b79e8d1-caa4-49af-9b7a-709e7e640930")
+        this.cubeService.getCubesByUserId('8b79e8d1-caa4-49af-9b7a-709e7e640930')
             .then(cubes => {
                 this.Cubes = cubes;
-                this.snackbarutil.open("Got this many cubes: " + cubes.length);
+                this.snackbarutil.open('Got this many cubes: ' + cubes.length);
                 console.log(cubes.length);
             })
             .catch(() => {
-                this.snackbarutil.open("Failed to get cubes.");
+                this.snackbarutil.open('Failed to get cubes.');
             });
     }
 

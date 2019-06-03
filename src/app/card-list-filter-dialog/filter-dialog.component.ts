@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ColorUtils } from '../util/color-util';
 import { Color } from '../models/color';
-import { Set, Sets, Types, Subtypes, Supertypes } from 'mtgsdk-ts';
+//import { Set, Sets, Types, Subtypes, Supertypes } from 'mtgsdk-ts';
 import { FormControl } from '@angular/forms';
 import { MathUtils } from '../util/math';
 import { SortUtils } from '../util/sort.util';
@@ -22,7 +22,7 @@ export class FilterDialog {
     private Cards: Card[] = new Array<Card>();
     private FilterCards: Card[] = new Array<Card>();
 
-    private Sets: Set[] = new Array<Set>();
+    //private Sets: Set[] = new Array<Set>();
     private setsFormControl: FormControl = new FormControl();
     private Rarities: string[] = ['Special', 'Mythic Rare', 'Rare', 'Uncommon', 'Common', 'Basic Land'];
     private raritiesFormControl: FormControl = new FormControl();
@@ -31,14 +31,14 @@ export class FilterDialog {
     private textIncludes: string;
 
     private colors: Color[] = this.colorUtils.getColors();
-    private colorGate: string = "or";
-    private multicolor: boolean = true;
+    private colorGate = 'or';
+    private multicolor = true;
 
-    private operators: string[] = ['=', '!=', '<', '>', '<=', '>=']
-    private cmcOperator: string = '=';
+    private operators: string[] = ['=', '!=', '<', '>', '<=', '>='];
+    private cmcOperator = '=';
     private cmc: number;
 
-    private duplicates: boolean = false;
+    private duplicates = false;
 
     private Types: string[] = new Array<string>();
     private typesFormControl: FormControl = new FormControl();
@@ -56,27 +56,27 @@ export class FilterDialog {
         this.supertypesFormControl.disable();
         this.subtypesFormControl.disable();
 
-        Sets.all({})
-            .on('data', set => this.Sets.push(set))
-            .on('end', () => {
-                this.sortUtils.alphabetical(this.Sets);
-                this.setsFormControl.enable();
-            });
-        Types.all()
-            .then(types => {
-                this.Types = types;
-                this.typesFormControl.enable();
-            });
-        Subtypes.all()
-            .then(subtypes => {
-                this.Subtypes = subtypes;
-                this.subtypesFormControl.enable();
-            });
-        Supertypes.all()
-            .then(supertypes => {
-                this.Supertypes = supertypes;
-                this.supertypesFormControl.enable();
-            });
+        // Sets.all({})
+        //     .on('data', set => this.Sets.push(set))
+        //     .on('end', () => {
+        //         this.sortUtils.alphabetical(this.Sets);
+        //         this.setsFormControl.enable();
+        //     });
+        // Types.all()
+        //     .then(types => {
+        //         this.Types = types;
+        //         this.typesFormControl.enable();
+        //     });
+        // Subtypes.all()
+        //     .then(subtypes => {
+        //         this.Subtypes = subtypes;
+        //         this.subtypesFormControl.enable();
+        //     });
+        // Supertypes.all()
+        //     .then(supertypes => {
+        //         this.Supertypes = supertypes;
+        //         this.supertypesFormControl.enable();
+        //     });
     }
 
     private applyFilters() {
@@ -87,7 +87,7 @@ export class FilterDialog {
         }
         if (this.textIncludes && this.textIncludes != '') {
             this.FilterCards = this.Cards.filter(card => {
-                let cardAny: any = card as any;
+                const cardAny: any = card as any;
                 return !((card.OracleText && card.OracleText.toLowerCase().includes(this.textIncludes.toLowerCase()))
                     || (cardAny.text && cardAny.text.toLowerCase().includes(this.textIncludes.toLowerCase())));
             });
@@ -139,12 +139,12 @@ export class FilterDialog {
     private isSelectedColor(card: Card): boolean {
         if (this.colorGate == 'and') {
             return this.getSelectedColorIdentitys().every(selectedColorIdentity => card.ColorIdentity
-                ? card.ColorIdentity.some(colorIdentity => colorIdentity == selectedColorIdentity)// this.mapToStringArray(card.ColorIdentity).includes(selectedColorIdentity)
+                ? card.ColorIdentity.some(colorIdentity => colorIdentity == selectedColorIdentity) // this.mapToStringArray(card.ColorIdentity).includes(selectedColorIdentity)
                     && ((!this.multicolor && card.ColorIdentity.length == 1) || (this.multicolor && card.ColorIdentity.length > 1))
                 : selectedColorIdentity == this.colorUtils.getColorless().Identity);
         } else {
             return this.getSelectedColorIdentitys().some(selectedColorIdentity => card.ColorIdentity
-                ? card.ColorIdentity.some(colorIdentity => colorIdentity == selectedColorIdentity)//this.mapToStringArray(card.ColorIdentity).includes(selectedColorIdentity)
+                ? card.ColorIdentity.some(colorIdentity => colorIdentity == selectedColorIdentity) //this.mapToStringArray(card.ColorIdentity).includes(selectedColorIdentity)
                     && !(!this.multicolor && card.ColorIdentity.length > 1)
                 : selectedColorIdentity == this.colorUtils.getColorless().Identity);
         }

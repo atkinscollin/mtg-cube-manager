@@ -1,6 +1,7 @@
+
+import {map} from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
 import { isNullOrUndefined } from 'util';
 import { environment } from '../../environments/environment';
 import { Card } from '../models/card';
@@ -15,17 +16,16 @@ export class CardService {
     // TODO - Change to pull json from their api
     private readonly CARD_DATA_PATH = './../assets/data/scryfall-default-cards.json';
 
-    constructor(private http: Http, private httpClient: HttpClient) { }
+    constructor(private http: HttpClient) { }
 
     getCards() {
-        return this.httpClient.get<Card[]>(this.apiPath)
-            .map(cards => this.deflattenObjects(cards))
+        return this.http.get<Card[]>(this.apiPath)
             .toPromise()
-            .then((cards: Card[]) => {
-                return cards;
+            .then(cards => {
+                return this.deflattenObjects(cards);
             })
             .catch(err => {
-                console.log("Error retrieving all cards.", err);
+                console.log('Error retrieving all cards.', err);
                 return new Array<Card>();
             });
     }
@@ -35,21 +35,21 @@ export class CardService {
      * The card data is acquired from https://scryfall.com/docs/api/bulk-data
      */
     populateDatabase() {
-        var scope = this;
+        const scope = this;
 
         this.http.get(scope.CARD_DATA_PATH)
-            .map(response => response.json())
+            //.map(response => response.json())
             .subscribe(jsonCards => {
-                var mappedCards = (Object.values(jsonCards) as JsonCard[]);
-                var allCards: Card[] = new Array<Card>();
+                const mappedCards = (Object.values(jsonCards) as JsonCard[]);
+                const allCards: Card[] = new Array<Card>();
                 mappedCards.forEach(mappedCard => {
                     if (!mappedCard.digital)
                     {
                         allCards.push(new Card().convertFromJsonCard(mappedCard));
                     }
                 });
-                
-                var filteredCards = this.filterOutUneededCards(allCards);
+
+                const filteredCards = this.filterOutUneededCards(allCards);
 
                 scope.addCards(filteredCards);
             }, err => console.log(err));
@@ -57,14 +57,14 @@ export class CardService {
 
     /**
      * Recursive function that goes through each card in the given array and adds it to the database.
-     * @param cards 
+     * @param cards
      */
     private addCards(cards: Card[]) {
         if (cards.length > 0) {
-            let currentCard = this.flattenObjectForDatabaseStorage(cards.pop());
+            const currentCard = this.flattenObjectForDatabaseStorage(cards.pop());
 
             // TODO - Add handler if a card fails to be added, probably just log it, maybe output it to a json
-            let headers: Headers = new Headers({ 'Content-Type': 'application/json' });
+            const headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
             return this.http.post(this.apiPath + '?Card=' + currentCard, currentCard, { headers })
                 .subscribe(() => this.addCards(cards));
         }
@@ -72,12 +72,12 @@ export class CardService {
 
     /**
      * Deflattens the objects retrieved from the database to their expanded form as arrays and objects instead of strings
-     * @param objs 
+     * @param objs
      */
     private deflattenObjects(objs: any[]): any[] {
         objs.forEach((obj, index) => {
             Object.values(obj).forEach((objValue, indexValue) => {
-                if (typeof objValue === "string" && objValue.includes('|')) {
+                if (typeof objValue === 'string' && objValue.includes('|')) {
                     objs[index][Object.keys(obj)[indexValue]] = objValue.split('|');
                 }
             });
@@ -101,16 +101,16 @@ export class CardService {
 
     /**
      * Filters out junk we don't want in the database
-     * @param cards 
+     * @param cards
      */
     private filterOutUneededCards(cards: Card[]): Card[] {
-        return cards.filter(card => !(card.TypeLine.includes("Vanguard") || card.TypeLine.includes("Scheme") 
-            || (card.TypeLine.includes("Plane") && !card.TypeLine.includes("Planeswalker"))));
+        return cards.filter(card => !(card.TypeLine.includes('Vanguard') || card.TypeLine.includes('Scheme')
+            || (card.TypeLine.includes('Plane') && !card.TypeLine.includes('Planeswalker'))));
     }
 
     /**
      * Joins the arrays on the card object into strings to be stored into the sql database.
-     * @param obj 
+     * @param obj
      */
     private flattenObjectForDatabaseStorage(obj: any): any {
         Object.values(obj).forEach((objValue, index) => {
