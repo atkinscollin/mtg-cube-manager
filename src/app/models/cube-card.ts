@@ -1,11 +1,11 @@
-import { Card } from "./card";
-import { Cube } from "./cube";
+import { Card } from './card';
+import { Cube } from './cube';
 
 export class CubeCard
 {
     CubeCardId: number;
     CubeId: number;
-    CardId: string;
+    CardId: number;
     CustomColorIdentity: string;
     CustomCmc: number;
     IsFoil: boolean;
@@ -14,7 +14,7 @@ export class CubeCard
     Card: Card;
     Cube: Cube;
 
-    constructor(cubeId: number = null, cardId: string = null) { 
+    constructor(cubeId: number = null, cardId: number = null) {
         this.CubeId = cubeId;
         this.CardId = cardId;
         this.IsFoil = false;

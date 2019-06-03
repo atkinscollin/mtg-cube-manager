@@ -12,7 +12,7 @@ export class CardListComponent implements OnInit {
     @Input() FilterCards: Card[] = new Array<Card>();
     @Input() viewEditMode: boolean = false;
 
-    private selectAll: boolean = false;
+    selectAll: boolean = false;
 
     constructor() { }
 

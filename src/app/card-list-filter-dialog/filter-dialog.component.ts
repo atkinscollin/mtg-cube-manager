@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ColorUtils } from '../util/color-util';
 import { Color } from '../models/color';
-//import { Set, Sets, Types, Subtypes, Supertypes } from 'mtgsdk-ts';
+// import { Set, Sets, Types, Subtypes, Supertypes } from 'mtgsdk-ts';
 import { FormControl } from '@angular/forms';
 import { MathUtils } from '../util/math';
 import { SortUtils } from '../util/sort.util';
@@ -22,36 +22,36 @@ export class FilterDialog {
     private Cards: Card[] = new Array<Card>();
     private FilterCards: Card[] = new Array<Card>();
 
-    //private Sets: Set[] = new Array<Set>();
-    private setsFormControl: FormControl = new FormControl();
-    private Rarities: string[] = ['Special', 'Mythic Rare', 'Rare', 'Uncommon', 'Common', 'Basic Land'];
-    private raritiesFormControl: FormControl = new FormControl();
+    // private Sets: Set[] = new Array<Set>();
+    setsFormControl: FormControl = new FormControl();
+    Rarities: string[] = ['Special', 'Mythic Rare', 'Rare', 'Uncommon', 'Common', 'Basic Land'];
+    raritiesFormControl: FormControl = new FormControl();
 
-    private nameIncludes: string;
-    private textIncludes: string;
+    nameIncludes: string;
+    textIncludes: string;
 
-    private colors: Color[] = this.colorUtils.getColors();
-    private colorGate = 'or';
-    private multicolor = true;
+    colors: Color[] = this.colorUtils.getColors();
+    colorGate = 'or';
+    multicolor = true;
 
-    private operators: string[] = ['=', '!=', '<', '>', '<=', '>='];
-    private cmcOperator = '=';
-    private cmc: number;
+    operators: string[] = ['=', '!=', '<', '>', '<=', '>='];
+    cmcOperator = '=';
+    cmc: number;
 
-    private duplicates = false;
+    duplicates = false;
 
-    private Types: string[] = new Array<string>();
-    private typesFormControl: FormControl = new FormControl();
-    private Subtypes: string[] = new Array<string>();
-    private subtypesFormControl: FormControl = new FormControl();
-    private Supertypes: string[] = new Array<string>();
-    private supertypesFormControl: FormControl = new FormControl();
+    Types: string[] = new Array<string>();
+    typesFormControl: FormControl = new FormControl();
+    Subtypes: string[] = new Array<string>();
+    subtypesFormControl: FormControl = new FormControl();
+    Supertypes: string[] = new Array<string>();
+    supertypesFormControl: FormControl = new FormControl();
 
     constructor(public dialogRef: MatDialogRef<FilterDialog>, @Inject(MAT_DIALOG_DATA) data: any) {
         this.Cards = data.Cards;
         this.FilterCards = data.FilterCards;
 
-        this.setsFormControl.disable;
+        this.setsFormControl.disable();
         this.typesFormControl.disable();
         this.supertypesFormControl.disable();
         this.subtypesFormControl.disable();
@@ -79,13 +79,13 @@ export class FilterDialog {
         //     });
     }
 
-    private applyFilters() {
+    applyFilters() {
         this.resetFilter();
 
-        if (this.nameIncludes && this.nameIncludes != '') {
-            this.FilterCards = this.Cards.filter(card => !card.Name.toLowerCase().includes(this.nameIncludes.toLowerCase()));
+        if (this.nameIncludes && this.nameIncludes !== '') {
+            this.FilterCards = this.Cards.filter(card => !card.CardName.toLowerCase().includes(this.nameIncludes.toLowerCase()));
         }
-        if (this.textIncludes && this.textIncludes != '') {
+        if (this.textIncludes && this.textIncludes !== '') {
             this.FilterCards = this.Cards.filter(card => {
                 const cardAny: any = card as any;
                 return !((card.OracleText && card.OracleText.toLowerCase().includes(this.textIncludes.toLowerCase()))
@@ -94,15 +94,15 @@ export class FilterDialog {
         }
 
         if (this.setsFormControl.value) {
-            this.FilterCards = this.Cards.filter(card => !this.setsFormControl.value.some(val => val.code == card.Set));
+            this.FilterCards = this.Cards.filter(card => !this.setsFormControl.value.some(val => val.code === card.SetCode));
         }
         if (this.raritiesFormControl.value) {
-            this.FilterCards = this.Cards.filter(card => !this.raritiesFormControl.value.some(val => val == card.Rarity));
+            this.FilterCards = this.Cards.filter(card => !this.raritiesFormControl.value.some(val => val === card.Rarity));
         }
 
         if (this.colors.some(color => color.Checked)) {
             this.FilterCards = this.Cards.filter(card => !this.isSelectedColor(card));
-        } else if (this.multicolor && this.colorGate == 'and') {
+        } else if (this.multicolor && this.colorGate === 'and') {
             this.FilterCards = this.Cards.filter(card => !(card.ColorIdentity && card.ColorIdentity.length > 1));
         }
 
@@ -111,18 +111,21 @@ export class FilterDialog {
         }
 
         if (this.duplicates) {
-            this.FilterCards = this.Cards.filter(card1 => !this.Cards.some(card2 => card1 != card2 && card1.Name == card2.Name));
+            this.FilterCards = this.Cards.filter(card1 => !this.Cards.some(card2 => card1 !== card2 && card1.CardName === card2.CardName));
         }
 
         // TODO - Refactor with new typeline, instead of split type, subtype, supertype
         if (this.typesFormControl.value) {
-            this.FilterCards = this.Cards.filter(card => !this.typesFormControl.value.some(val => card.TypeLine && card.TypeLine.includes(val)));
+            this.FilterCards = this.Cards.filter(card =>
+                !this.typesFormControl.value.some(val => card.TypeLine && card.TypeLine.includes(val)));
         }
         if (this.subtypesFormControl.value) {
-            this.FilterCards = this.Cards.filter(card => !this.subtypesFormControl.value.some(val => card.TypeLine && card.TypeLine.includes(val)));
+            this.FilterCards = this.Cards.filter(card =>
+                !this.subtypesFormControl.value.some(val => card.TypeLine && card.TypeLine.includes(val)));
         }
         if (this.supertypesFormControl.value) {
-            this.FilterCards = this.Cards.filter(card => !this.supertypesFormControl.value.some(val => card.TypeLine && card.TypeLine.includes(val)));
+            this.FilterCards = this.Cards.filter(card =>
+                !this.supertypesFormControl.value.some(val => card.TypeLine && card.TypeLine.includes(val)));
         }
 
         this.closeDialog();
@@ -137,16 +140,16 @@ export class FilterDialog {
     }
 
     private isSelectedColor(card: Card): boolean {
-        if (this.colorGate == 'and') {
+        if (this.colorGate === 'and') {
             return this.getSelectedColorIdentitys().every(selectedColorIdentity => card.ColorIdentity
-                ? card.ColorIdentity.some(colorIdentity => colorIdentity == selectedColorIdentity) // this.mapToStringArray(card.ColorIdentity).includes(selectedColorIdentity)
-                    && ((!this.multicolor && card.ColorIdentity.length == 1) || (this.multicolor && card.ColorIdentity.length > 1))
-                : selectedColorIdentity == this.colorUtils.getColorless().Identity);
+                ? card.ColorIdentity.includes(selectedColorIdentity)
+                && ((!this.multicolor && card.ColorIdentity.length === 1) || (this.multicolor && card.ColorIdentity.length > 1))
+                : selectedColorIdentity === this.colorUtils.getColorless().Identity);
         } else {
             return this.getSelectedColorIdentitys().some(selectedColorIdentity => card.ColorIdentity
-                ? card.ColorIdentity.some(colorIdentity => colorIdentity == selectedColorIdentity) //this.mapToStringArray(card.ColorIdentity).includes(selectedColorIdentity)
-                    && !(!this.multicolor && card.ColorIdentity.length > 1)
-                : selectedColorIdentity == this.colorUtils.getColorless().Identity);
+                ? card.ColorIdentity.includes(selectedColorIdentity)
+                && !(!this.multicolor && card.ColorIdentity.length > 1)
+                : selectedColorIdentity === this.colorUtils.getColorless().Identity);
         }
     }
 

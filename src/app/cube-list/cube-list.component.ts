@@ -38,12 +38,12 @@ export class CubeListComponent implements OnInit {
     //private Cards: Card[] = new Array<Card>();
     private FilterCards: Card[] = new Array<Card>();
 
-    private searchText = '';
+    searchText = '';
     searchResults: Card[] = new Array<Card>();
     selectedCard: Card;
     private searchCardList: Card[] = new Array<Card>();
 
-    private addCardCtrl: FormControl = new FormControl();
+    addCardCtrl: FormControl = new FormControl();
     filteredCards: Observable<any[]>;
 
     viewEditMode = false;
@@ -93,11 +93,9 @@ export class CubeListComponent implements OnInit {
     addCard(card: Card) {
         console.log(card);
 
-        let newCubeCard: CubeCard = new CubeCard(this.Cube.CubeId, card.Id);
-        //this.Cards.push(card);
+        const newCubeCard: CubeCard = new CubeCard(this.Cube.CubeId, card.CardId);
         this.cubeCardService.createCubeCard(newCubeCard)
             .then(() => {
-                //this.Cards.push(card);
                 this.cubeService.getCubeByCubeId(1).then(cube => this.Cube = cube);
                 this.clearSearch();
             })
@@ -129,7 +127,7 @@ export class CubeListComponent implements OnInit {
     }
 
     displayCard(card: Card): string | Card {
-        return card ? card.Name : card;
+        return card ? card.CardName : card;
     }
 
     openImportDialog() {
@@ -172,22 +170,22 @@ export class CubeListComponent implements OnInit {
     }
 
     private search() {
-        let scope = this;
+        const scope = this;
         this.searchResults = new Array<Card>();
 
         if (this.searchText && this.searchCardList && this.searchCardList.length > 0) {
             this.searchResults = this.sortUtils.alphabetical(
                 this.searchCardList
-                    .filter(card => card.Name.toLowerCase().startsWith(scope.searchText.toLowerCase())))
+                    .filter(card => card.CardName.toLowerCase().startsWith(scope.searchText.toLowerCase())))
                 .sort((a, b) => a.Name.length - b.Name.length)
                 .slice(0, 10);
         }
     }
 
     populateSearchCardList() {
-        let scope = this;
+        const scope = this;
 
-        if (!this.searchCardList || this.searchCardList.length == 0) {
+        if (!this.searchCardList || this.searchCardList.length === 0) {
             this.cardService.getCards()
                 .then(cards => {
                     scope.searchCardList = cards;

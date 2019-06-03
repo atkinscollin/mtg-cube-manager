@@ -11,32 +11,32 @@ export class CubeCardService {
     constructor(private httpClient: HttpClient) { }
 
     getCubeCardById(cubeCardId: number) {
-        return this.httpClient.get<CubeCard>(this.apiPath + "?cubeCardId=" + cubeCardId)
+        return this.httpClient.get<CubeCard>(this.apiPath + '?cubeCardId=' + cubeCardId)
             .toPromise()
             .then((cubeCard: CubeCard) => {
                 return cubeCard;
             })
             .catch(err => {
-                console.log("Error retrieving card.", err);
+                console.log('Error retrieving card.', err);
                 return new CubeCard();
             });
     }
 
     getCubeCardsByCubeId(cubeId: number) {
-        return this.httpClient.get<CubeCard[]>(this.apiPath + "?cubeId=" + cubeId)
+        return this.httpClient.get<CubeCard[]>(this.apiPath + '?cubeId=' + cubeId)
             .toPromise()
             .then((cubeCards: CubeCard[]) => {
                 return cubeCards;
             })
             .catch(err => {
-                console.log("Error retrieving cards.", err);
+                console.log('Error retrieving cards.', err);
                 return new Array<CubeCard>();
             });
     }
 
     createCubeCard(cubeCard: CubeCard) {
-        var token = localStorage.getItem('authToken');
-        let httpOptions = {
+        const token = localStorage.getItem('authToken');
+        const httpOptions = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + token
@@ -49,7 +49,7 @@ export class CubeCardService {
                 return resultCubeCard;
             })
             .catch(err => {
-                console.log("Error posting cube card.", err);
+                console.log('Error posting cube card.', err);
                 return null;
             });
     }

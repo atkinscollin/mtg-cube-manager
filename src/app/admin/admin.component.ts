@@ -14,8 +14,9 @@ export class AdminComponent implements OnInit {
     // TODO - Add check for correct rights on init
     ngOnInit() { }
 
-    private populateDatabase() {
-        this.cardService.populateDatabase();
+    populateDatabase() {
+        // this.cardService.populateDatabase();
+        console.log('Not implemented.');
     }
 
 }

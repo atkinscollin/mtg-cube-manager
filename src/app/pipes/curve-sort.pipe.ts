@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Color } from '../models/color';
 import { CardUtils } from '../util/card.util';
 import { Card } from '../models/card';
 
@@ -9,7 +8,7 @@ import { Card } from '../models/card';
 })
 
 /**
- * TODO 
+ * TODO
  * - dynamic ordering
  * - check more cases
  * - set
@@ -27,15 +26,16 @@ export class CurveSortPipe implements PipeTransform {
             return cards;
         }
 
-        return cards.sort((a, b) => ((this.getColorStrength(b) - this.getColorStrength(a)) * 10000) - (this.cardUtils.getCmc(b) - this.cardUtils.getCmc(a)) * 100 - (this.getAlphabeticalWinner(a, b)));
+        return cards.sort((a, b) =>
+            ((this.getColorStrength(b) - this.getColorStrength(a)) * 10000)
+                - (this.cardUtils.getCmc(b) - this.cardUtils.getCmc(a)) * 100 - (this.getAlphabeticalWinner(a, b)));
     }
 
     private getAlphabeticalWinner(a: Card, b: Card) {
-        var nameA = a.Name.toLowerCase(), nameB = b.Name.toLowerCase();
+        const nameA = a.CardName.toLowerCase(), nameB = b.CardName.toLowerCase();
         if (nameA < nameB) {
             return 1;
-        }
-        else if (nameA > nameB) {
+        } else if (nameA > nameB) {
             return -1;
         }
         return 0;
