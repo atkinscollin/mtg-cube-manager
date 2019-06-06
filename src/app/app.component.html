@@ -7,7 +7,7 @@
             </mat-list-item>
             <mat-divider></mat-divider>
             <mat-list-item>
-                <button mat-button (click)="globalSidenav.close()" routerLink="/cubeList">Cube List</button>
+                <button mat-button (click)="globalSidenav.close()" routerLink="/cubeList/1">Cube List</button>
             </mat-list-item>
             <mat-divider></mat-divider>
             <!-- TODO - Add admin rights check to see and on click -->
@@ -26,6 +26,7 @@
         </mat-list>
     </mat-sidenav>
     <mat-sidenav-content>
+        <app-loader></app-loader>
         <router-outlet></router-outlet>
     </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,5 +1,5 @@
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -21,6 +21,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
@@ -34,7 +35,7 @@ import { FilterDialog } from './card-list-filter-dialog/filter-dialog.component'
 import { OrderByDialog } from './card-list-orderby-dialog/orderby-dialog.component';
 import { CardListComponent } from './card-list/card-list.component';
 import { CardRowComponent } from './card-row/card-row.component';
-import { CreateCubeDialog } from './create-cube-dialog/create-cube-dialog.component';
+import { CreateCubeDialogComponent } from './create-cube-dialog/create-cube-dialog.component';
 import { CubeListComponent } from './cube-list/cube-list.component';
 import { EditCubeCardDialog } from './edit-cube-card-modal/edit-cube-card-modal.component';
 import { HeaderComponent } from './header/header.component';
@@ -46,9 +47,16 @@ import { CardFilterPipe } from './pipes/card-filter.pipe';
 import { CurveSortPipe } from './pipes/curve-sort.pipe';
 import { RegisterComponent } from './register/register.component';
 import { TokenService } from './services/token.service';
+import { LoaderComponent } from './loader/component/loader.component';
+import { LoaderService } from './loader/service/loader.service';
+import { Interceptor } from './interceptor/interceptor';
+import { GlobalErrorHandler } from './util/error-handler';
+import { LoggerService } from './util/logger.service';
+import { AddCardComponent } from './add-card/add-card.component';
+import { SortUtility } from './util/sort.service';
 
 const appRoutes: Routes = [
-    { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+    { path: '', component: HomeComponent },//, canActivate: [AuthGuard] },
     { path: 'register', component: RegisterComponent },
     { path: 'login', component: LoginComponent },
     { path: 'cubeList/:id', component: CubeListComponent },
@@ -57,70 +65,78 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HeaderComponent,
-        CubeListComponent,
-        HomeComponent,
-        BadPathComponent,
-        CardRowComponent,
-        CardImageDialog,
-        FilterDialog,
-        CardFilterPipe,
-        AlphabeticalSortPipe,
-        OrderByDialog,
-        CurveSortPipe,
-        ImportDialog,
-        CardListComponent,
-        RegisterComponent,
-        LoginComponent,
-        AdminComponent,
-        CreateCubeDialog,
-        EditCubeCardDialog
-    ],
-    imports: [
-        RouterModule.forRoot(
-            appRoutes
-        ),
-        BrowserModule,
-        FlexLayoutModule,
-        BrowserAnimationsModule,
-        HttpClientModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatAutocompleteModule,
-        MatIconModule,
-        MatSelectModule,
-        MatOptionModule,
-        MatDialogModule,
-        MatMenuModule,
-        MatCheckboxModule,
-        MatCardModule,
-        MatSlideToggleModule,
-        MatRadioModule,
-        MatTooltipModule,
-        MatProgressBarModule,
-        MatListModule,
-        MatSnackBarModule,
-        MatSidenavModule
-    ],
-    entryComponents: [
-        CardImageDialog,
-        FilterDialog,
-        OrderByDialog,
-        ImportDialog,
-        CreateCubeDialog,
-        EditCubeCardDialog
-    ],
-    providers: [
-        AuthGuard,
-        TokenService
-    ],
-    bootstrap: [AppComponent]
+   declarations: [
+      AppComponent,
+      HeaderComponent,
+      CubeListComponent,
+      HomeComponent,
+      BadPathComponent,
+      CardRowComponent,
+      CardImageDialog,
+      FilterDialog,
+      CardFilterPipe,
+      AlphabeticalSortPipe,
+      OrderByDialog,
+      CurveSortPipe,
+      ImportDialog,
+      CardListComponent,
+      RegisterComponent,
+      LoginComponent,
+      AdminComponent,
+      CreateCubeDialogComponent,
+      EditCubeCardDialog,
+      LoaderComponent,
+      AddCardComponent
+   ],
+   imports: [
+      RouterModule.forRoot(appRoutes),
+      BrowserModule,
+      FlexLayoutModule,
+      BrowserAnimationsModule,
+      HttpClientModule,
+      FormsModule,
+      ReactiveFormsModule,
+      MatToolbarModule,
+      MatButtonModule,
+      MatFormFieldModule,
+      MatInputModule,
+      MatAutocompleteModule,
+      MatIconModule,
+      MatSelectModule,
+      MatOptionModule,
+      MatDialogModule,
+      MatMenuModule,
+      MatCheckboxModule,
+      MatCardModule,
+      MatSlideToggleModule,
+      MatRadioModule,
+      MatTooltipModule,
+      MatProgressBarModule,
+      MatListModule,
+      MatSnackBarModule,
+      MatSidenavModule,
+      MatProgressSpinnerModule
+   ],
+   entryComponents: [
+      CardImageDialog,
+      FilterDialog,
+      OrderByDialog,
+      ImportDialog,
+      CreateCubeDialogComponent,
+      EditCubeCardDialog
+   ],
+   providers: [
+      AuthGuard,
+      TokenService,
+      LoaderService,
+      LoggerService,
+      SortUtility,
+      { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },
+      { provide: ErrorHandler, useClass: GlobalErrorHandler }
+   ],
+   bootstrap: [
+      AppComponent
+   ]
 })
 
 export class AppModule { }

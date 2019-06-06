@@ -3,17 +3,17 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Cube } from '../models/cube';
 
 @Component({
-    selector: 'create-cube-dialog',
+    selector: 'app-create-cube-dialog',
     templateUrl: 'create-cube-dialog.component.html',
 })
 
-export class CreateCubeDialog {
+export class CreateCubeDialogComponent {
 
     Cube: Cube = new Cube();
 
-    constructor(public dialogRef: MatDialogRef<CreateCubeDialog>, @Inject(MAT_DIALOG_DATA) data: any) { }
+    constructor(public dialogRef: MatDialogRef<CreateCubeDialogComponent>, @Inject(MAT_DIALOG_DATA) data: any) { }
 
-    create() {
+    createAndClose() {
         this.closeDialog(this.Cube);
     }
 

@@ -1,10 +1,10 @@
 <span style="display:flow-root;">
     <div style="float:left;">
         <h2 *ngIf="!viewEditMode">
-            {{Cube.CubeName}}
+            {{cube.CubeName}}
         </h2>
         <mat-form-field *ngIf="viewEditMode">
-            <input matInput [(ngModel)]="Cube.CubeName" placeholder="Cube Title" aria-label="Edit Cube Title">
+            <input matInput [(ngModel)]="cube.CubeName" placeholder="Cube Title" aria-label="Edit Cube Title">
         </mat-form-field>
     </div>
     <button mat-icon-button style="float:right; margin:0 auto;" [matMenuTriggerFor]="menu">
@@ -12,7 +12,7 @@
     </button>
 </span>
 <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="viewEditMode = !viewEditMode; populateSearchCardList();">
+    <button mat-menu-item (click)="viewEditMode = !viewEditMode;">
         <mat-icon>edit</mat-icon>
         <span>{{!viewEditMode ? 'Edit' : 'Normal'}}</span>
     </button>
@@ -20,7 +20,8 @@
         <mat-icon>import_export</mat-icon>
         <span>Import</span>
     </button>
-    <button *ngIf="viewEditMode" mat-menu-item (click)="deleteSelectedCards()" [disabled]="!(cardsSelected().length > 0)">
+    <button *ngIf="viewEditMode" mat-menu-item (click)="deleteSelectedCards()"
+        [disabled]="!(cardsSelected().length > 0)">
         <mat-icon>delete</mat-icon>
         <span>Delete Selected</span>
     </button>
@@ -34,37 +35,19 @@
     </button>
 </mat-menu>
 
-<div *ngIf="!loading">
-    <form *ngIf="viewEditMode" class="add-card-form">
-        <!-- TODO - move to it's own component -->
-        <mat-form-field class="full-width">
-            <input matInput [(ngModel)]="searchText" placeholder="Add Card" name="searchText" aria-label="Add Card" [matAutocomplete]="auto"
-                [formControl]="addCardCtrl">
-            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCard" (optionSelected)="addCard($event.option.value)">
-                <mat-option *ngFor="let card of searchResults" [value]="card">
-                    <!-- <img style="vertical-align:middle;" [src]="card.ImageUris.Small" onError="this.src=environment.cardBackUrl" height="50" aria-hidden/>
-                    <span>{{card.Name}}</span>
-                    <i class="ss ss-{{card.SetCode == 'tsb' ? 'tsp' : card.Set.toLowerCase()}} ss-{{card.Set == 'tsb' ? 'timeshifted' : card.Rarity.toLowerCase()}} ss-fw ss-grad"
-                        aria-hidden></i> -->
-                    <card-row [Card]="card"></card-row>
-                </mat-option>
-            </mat-autocomplete>
-        </mat-form-field>
-    </form>
-
-    <div *ngIf="Cube && Cube.CubeCards && Cube.CubeCards.length > 0; else noCardsMessage">
-        <div *ngFor="let card of Cube.CubeCards">
-        <!-- <card-row *ngFor="let card of Cube.CubeCards | cardFilter: FilterCards | curveSort" [Card]="card" [viewEditMode]="viewEditMode"></card-row> -->
-            <img style="vertical-align:middle;" [src]="card.Card.ImageUriSmall" onError="this.src=environment.cardBackUrl" height="50" aria-hidden/>
-            <span>{{card.Card.Name}}</span>
-            <i class="ss ss-{{card.Card.SetCode == 'tsb' ? 'tsp' : card.Card.Set.toLowerCase()}} ss-{{card.Card.Set == 'tsb' ? 'timeshifted' : card.Card.Rarity.toLowerCase()}} ss-fw ss-grad"
-                aria-hidden></i>
-        </div>
-    </div>
+<div *ngIf="viewEditMode">
+    <app-add-card [cube]="cube" [viewEditMode]="viewEditMode" (addCardEvent)="getCube()"></app-add-card>
 </div>
 
-<div *ngIf="loading">
-    <mat-progress-bar color="primary" mode="determinate" [value]="loadingProgress"></mat-progress-bar>
+<div *ngIf="cube && cube.CubeCards && cube.CubeCards.length > 0;">
+    <div *ngFor="let card of cube.CubeCards">
+        <!-- <card-row *ngFor="let card of cube.CubeCards | cardFilter: filteredCards | curveSort" [Card]="card" [viewEditMode]="viewEditMode"></card-row> -->
+        <img style="vertical-align:middle;" [src]="card.Card.ImageUriSmall" onError="this.src=environment.cardBackUrl"
+            height="50" aria-hidden />
+        <span>{{card.Card.CardName}}</span>
+        <i class="ss ss-{{card.Card.SetCode == 'tsb' ? 'tsp' : card.Card.SetCode.toLowerCase()}} ss-{{card.Card.SetCode == 'tsb' ? 'timeshifted' : card.Card.Rarity.toLowerCase()}} ss-fw ss-grad"
+            aria-hidden></i>
+    </div>
 </div>
 
 <!-- <button mat-mini-fab class="fixed-bottom-right" (click)="viewEditMode = !viewEditMode" aria-label="Toggle edit view">

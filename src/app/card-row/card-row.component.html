@@ -1,8 +1,8 @@
 <div *ngIf="Card" class="full-width" style="line-height: 60px; vertical-align: middle; display: inline-block;">
-    <img class="clickable" style="vertical-align: middle;" [src]="Card.ImageUris.Normal" onError="this.src=environment.cardBackUrl"
+    <img class="clickable" style="vertical-align: middle;" [src]="Card.ImageUriNormal" onError="this.src=environment.cardBackUrl"
         (click)="openCardImageDialog()" height="50" aria-hidden/>
-    <span>{{Card.Name}}</span>
-    <i class="ss ss-{{Card.Set == 'tsb' ? 'tsp' : Card.Set.toLowerCase()}} ss-{{Card.Set == 'tsb' ? 'timeshifted' : Card.Rarity.toLowerCase()}} ss-fw ss-grad"
+    <span>{{Card.CardName}}</span>
+    <i class="ss ss-{{Card.SetCode == 'tsb' ? 'tsp' : Card.SetCode.toLowerCase()}} ss-{{Card.SetCode == 'tsb' ? 'timeshifted' : Card.Rarity.toLowerCase()}} ss-fw ss-grad"
         [matTooltip]="Card.Set" aria-hidden></i>
     <mat-checkbox *ngIf="viewEditMode" style="vertical-align: middle; float: right" [(ngModel)]="Card.selected"></mat-checkbox>
     <button mat-icon-button *ngIf="viewEditMode" style="vertical-align: middle; float: right" color="warn" (click)="deleteCardEvent.emit(Card)">

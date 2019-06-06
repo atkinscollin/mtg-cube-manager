@@ -11,27 +11,9 @@ export class CardService {
 
     constructor(private http: HttpClient) { }
 
-    getCards() {
-        return this.http.get<Card[]>(this.apiPath).toPromise()
-            .then((cards: Card[]) => {
-                return cards;
-            })
-            .catch(err => {
-                console.log('Error retrieving all cards.', err);
-                return new Array<Card>();
-            });
+    getCardSearchInfo() {
+        return this.http.get<Card[]>(this.apiPath + 'searchinfo');
     }
-
-    // async getCards() {
-    //     try {
-    //         const cards = await this.http.get<Card[]>(this.apiPath).toPromise();
-    //         return cards;
-    //     }
-    //     catch (err) {
-    //         console.log('Error retrieving all cards.', err);
-    //         return new Array<Card>();
-    //     }
-    // }
 
     // TODO - add this to the C# side.
     /**

@@ -5,7 +5,7 @@ import { Color } from '../models/color';
 // import { Set, Sets, Types, Subtypes, Supertypes } from 'mtgsdk-ts';
 import { FormControl } from '@angular/forms';
 import { MathUtils } from '../util/math';
-import { SortUtils } from '../util/sort.util';
+import { SortUtility } from '../util/sort.service';
 import { Card } from '../models/card';
 
 @Component({
@@ -16,7 +16,7 @@ import { Card } from '../models/card';
 export class FilterDialog {
 
     private colorUtils = new ColorUtils();
-    private sortUtils: SortUtils = new SortUtils();
+    private sortUtils: SortUtility = new SortUtility();
     private mathUtils: MathUtils = new MathUtils();
 
     private Cards: Card[] = new Array<Card>();

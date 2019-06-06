@@ -2,6 +2,7 @@
     <mat-list-item>
         <button mat-raised-button (click)="createCubeList()">Create New Cube</button>
     </mat-list-item>
+    <mat-divider></mat-divider>
     <mat-list-item *ngFor="let cube of Cubes">
         <button mat-raised-button [routerLink]="['/cubeList', cube.CubeId]">{{cube.CubeName}}</button>
     </mat-list-item>
