@@ -1,16 +1,16 @@
-import { CardImageDialog } from '../card-image-dialog/card-image-dialog.component';
+import { CardImageDialog } from '../../card-image-dialog/card-image-dialog.component';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CubeCard } from '../models/cube-card';
+import { CubeCard } from '../../models/cube-card';
 
 @Component({
-    selector: 'app-card-row',
-    templateUrl: './card-row.component.html',
-    styleUrls: ['./card-row.component.css'],
+    selector: 'app-cube-card-row',
+    templateUrl: './cube-card-row.component.html',
+    styleUrls: ['./cube-card-row.component.css'],
     providers: []
 })
 
-export class CardRowComponent {
+export class CubeCardRowComponent {
 
     @Input() card: CubeCard;
     @Input() viewEditMode = false;

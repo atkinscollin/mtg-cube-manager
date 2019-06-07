@@ -1,15 +1,15 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Card } from '../models/card';
-import { CubeCard } from '../models/cube-card';
+import { Card } from '../../models/card';
+import { CubeCard } from '../../models/cube-card';
 import { MatDialog } from '@angular/material/dialog';
-import { FilterDialog } from '../card-list-filter-dialog/filter-dialog.component';
+import { FilterDialog } from '../../card-list-filter-dialog/filter-dialog.component';
 
 @Component({
-    selector: 'app-card-list',
-    templateUrl: './card-list.component.html',
-    styleUrls: ['./card-list.component.css']
+    selector: 'app-cube-card-list',
+    templateUrl: './cube-card-list.component.html',
+    styleUrls: ['./cube-card-list.component.css']
 })
-export class CardListComponent implements OnInit {
+export class CubeCardListComponent implements OnInit {
 
     @Input() cards: CubeCard[] = new Array<CubeCard>();
     @Input() filteredCards: CubeCard[] = new Array<CubeCard>();

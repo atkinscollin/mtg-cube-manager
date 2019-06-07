@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { FilterDialog } from '../card-list-filter-dialog/filter-dialog.component';
+import { FilterDialog } from '../../card-list-filter-dialog/filter-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { OrderByDialog } from '../card-list-orderby-dialog/orderby-dialog.component';
-import { ImportDialog } from '../import-dialog/import-dialog.component';
-import { Card } from '../models/card';
-import { Cube } from '../models/cube';
+import { OrderByDialog } from '../../card-list-orderby-dialog/orderby-dialog.component';
+import { ImportDialog } from '../../import-dialog/import-dialog.component';
+import { Card } from '../../models/card';
+import { Cube } from '../../models/cube';
 import { ActivatedRoute } from '@angular/router';
-import { CubeService } from '../services/cube.service';
-import { CubeCard } from '../models/cube-card';
+import { CubeService } from '../../services/cube.service';
+import { CubeCard } from '../../models/cube-card';
 
 @Component({
-    selector: 'cube-list',
-    templateUrl: './cube-list.component.html',
-    styleUrls: ['./cube-list.component.css'],
+    selector: 'app-cube',
+    templateUrl: './cube.component.html',
+    styleUrls: ['./cube.component.css'],
     providers: [CubeService]
 })
 
@@ -23,17 +23,17 @@ import { CubeCard } from '../models/cube-card';
  * - setup pagination
  */
 
-export class CubeListComponent implements OnInit {
+export class CubeComponent implements OnInit {
 
     cube: Cube = new Cube();
     filteredCards: Card[] = new Array<Card>();
     viewEditMode = false;
 
-    constructor (public dialog: MatDialog, private route: ActivatedRoute,
-        private cubeService: CubeService, ) { }
+    constructor (public dialog: MatDialog, private activatedRoute: ActivatedRoute, private cubeService: CubeService) { }
 
     ngOnInit() {
-        this.getCube();
+        const cubeId = parseInt(this.activatedRoute.snapshot.paramMap.get('cubeId'), 10);
+        this.getCube(cubeId);
         this.addCardTest();
     }
 
@@ -62,9 +62,8 @@ export class CubeListComponent implements OnInit {
         this.cube.CubeCards.push(cubeCard);
     }
 
-    getCube() {
-        const id = parseInt(this.route.snapshot.paramMap.get('id'), 10);
-        this.cubeService.getCubeByCubeId(id)
+    getCube(cubeId: number) {
+        this.cubeService.getCubeByCubeId(cubeId)
             .subscribe(cube => this.cube = cube);
     }
 
@@ -105,5 +104,9 @@ export class CubeListComponent implements OnInit {
                     // TODO
                 }
             });
+    }
+
+    refreshCubeList() {
+        this.getCube(this.cube.CubeId);
     }
 }

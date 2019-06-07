@@ -33,10 +33,10 @@ import { BadPathComponent } from './bad-path/bad-path.component';
 import { CardImageDialog } from './card-image-dialog/card-image-dialog.component';
 import { FilterDialog } from './card-list-filter-dialog/filter-dialog.component';
 import { OrderByDialog } from './card-list-orderby-dialog/orderby-dialog.component';
-import { CardListComponent } from './card-list/card-list.component';
-import { CardRowComponent } from './card-row/card-row.component';
+import { CubeCardListComponent } from './cube/cube-card-list/cube-card-list.component';
+import { CubeCardRowComponent } from './cube/cube-card-row/cube-card-row.component';
 import { CreateCubeDialogComponent } from './create-cube-dialog/create-cube-dialog.component';
-import { CubeListComponent } from './cube-list/cube-list.component';
+import { CubeComponent } from './cube/cube/cube.component';
 import { EditCubeCardDialog } from './edit-cube-card-modal/edit-cube-card-modal.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
@@ -59,7 +59,7 @@ const appRoutes: Routes = [
     { path: '', component: HomeComponent },//, canActivate: [AuthGuard] },
     { path: 'register', component: RegisterComponent },
     { path: 'login', component: LoginComponent },
-    { path: 'cubeList/:id', component: CubeListComponent },
+    { path: 'cube/:cubeId', component: CubeComponent },
     { path: 'admin', component: AdminComponent }, // TODO - Add AuthGaurd
     { path: '**', component: BadPathComponent } // Wildcard route, if none match
 ];
@@ -68,10 +68,10 @@ const appRoutes: Routes = [
    declarations: [
       AppComponent,
       HeaderComponent,
-      CubeListComponent,
+      CubeComponent,
       HomeComponent,
       BadPathComponent,
-      CardRowComponent,
+      CubeCardRowComponent,
       CardImageDialog,
       FilterDialog,
       CardFilterPipe,
@@ -79,7 +79,7 @@ const appRoutes: Routes = [
       OrderByDialog,
       CurveSortPipe,
       ImportDialog,
-      CardListComponent,
+      CubeCardListComponent,
       RegisterComponent,
       LoginComponent,
       AdminComponent,

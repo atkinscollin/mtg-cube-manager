@@ -2,8 +2,8 @@
     <div style="width: 100%; display: inline-block;">
         <mat-checkbox *ngIf="viewEditMode" style="float:right" [(ngModel)]="allSelected" (click)="selectAllCards()"></mat-checkbox>
     </div>
-    <app-card-row *ngFor="let card of cards | cardFilter: filteredCards | curveSort" [card]="card" [viewEditMode]="viewEditMode" 
-        (deleteCardEvent)="deleteCard($event)"></app-card-row>
+    <app-cube-card-row *ngFor="let card of cards | cardFilter: filteredCards | curveSort" [card]="card" [viewEditMode]="viewEditMode" 
+        (deleteCardEvent)="deleteCard($event)"></app-cube-card-row>
 
     <div class="full-width center" *ngIf="cards.length <= filteredCards.length">
         <p>Urza you have gone too far! You filtered it all!</p>
