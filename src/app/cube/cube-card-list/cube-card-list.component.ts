@@ -17,12 +17,12 @@ export class CubeCardListComponent implements OnInit {
 
     allSelected = false;
 
-    constructor(public dialog: MatDialog) { }
+    constructor (public dialog: MatDialog) { }
 
     ngOnInit() { }
 
-    deleteCard(cardToDelete: Card) {
-        this.cards.splice(this.cards.findIndex(card => card.Card === cardToDelete), 1);
+    deleteCard(cardToDelete: CubeCard) {
+        this.cards.splice(this.cards.findIndex(card => card === cardToDelete), 1);
     }
 
     openFilterDialog() {
@@ -34,6 +34,10 @@ export class CubeCardListComponent implements OnInit {
             .subscribe(filterCards => {
                 this.filteredCards = filterCards;
             });
+    }
+
+    resetFilter() {
+        this.filteredCards = new Array<CubeCard>();
     }
 
     selectAllCards() {

@@ -37,7 +37,7 @@ export class CubeComponent implements OnInit {
         this.addCardTest();
     }
 
-    private cardsSelected(): CubeCard[] {
+    cardsSelected(): CubeCard[] {
         return this.cube.CubeCards.filter(card => {
             const cardAny = card as any;
             return cardAny.selected;

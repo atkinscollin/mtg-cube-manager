@@ -7,7 +7,7 @@
 
     <div class="full-width center" *ngIf="cards.length <= filteredCards.length">
         <p>Urza you have gone too far! You filtered it all!</p>
-        <button mat-raised-button style="display:inline-block" (click)="filteredCards = []">Reset</button>
+        <button mat-raised-button style="display:inline-block" (click)="resetFilter()">Reset</button>
         <button mat-raised-button style="display:inline-block" (click)="openFilterDialog()">Filter Again</button>
     </div>
 </div>

@@ -5,7 +5,7 @@
     <i class="ss ss-{{card.Card.SetCode == 'tsb' ? 'tsp' : card.Card.SetCode.toLowerCase()}} ss-{{card.Card.SetCode == 'tsb' ? 'timeshifted' : card.Card.Rarity.toLowerCase()}} ss-fw ss-grad"
         [matTooltip]="card.Card.SetName" aria-hidden></i>
     <mat-checkbox *ngIf="viewEditMode" style="vertical-align: middle; float: right" [(ngModel)]="card.selected"></mat-checkbox>
-    <button mat-icon-button *ngIf="viewEditMode" style="vertical-align: middle; float: right" color="warn" (click)="deleteCardEvent.emit(card)">
+    <button mat-icon-button *ngIf="viewEditMode" style="vertical-align: middle; float: right" color="warn" (click)="deleteCard()">
         <mat-icon>delete</mat-icon>
     </button>
 </div>
