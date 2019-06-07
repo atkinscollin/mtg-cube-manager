@@ -34,24 +34,8 @@ export class CubeListComponent implements OnInit {
 
     ngOnInit() {
         this.getCube();
-        //this.dummyData();
+        this.addCardTest();
     }
-
-    // ******** TEMP - FOR TESTING ********
-    // dummyData() {
-    //     var scope = this;
-    //     this.loading = true;
-
-    //     if (this.searchCardList === undefined || this.searchCardList.length == 0) {
-    //         this.cardService.getCards()
-    //             .then(cards => {
-    //                 scope.searchCardList = cards;
-    //                 this.Cards = scope.searchCardList.filter(card => card.Name.toLowerCase().includes('elf'));
-    //                 this.loading = false;
-    //             })
-    //             .catch(() => this.loading = false);
-    //     }
-    // }
 
     private cardsSelected(): CubeCard[] {
         return this.cube.CubeCards.filter(card => {
@@ -68,6 +52,14 @@ export class CubeListComponent implements OnInit {
         this.cardsSelected().forEach(card => {
             this.deleteCard(card);
         });
+    }
+    addCardTest() {
+        var card: Card = new Card();
+        card.CardName = 'testcard';
+        card.SetCode = 'tsb';
+        var cubeCard = new CubeCard(1, 1);
+        cubeCard.Card = card;
+        this.cube.CubeCards.push(cubeCard);
     }
 
     getCube() {

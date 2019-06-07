@@ -1,14 +1,14 @@
-<div *ngIf="Cards && Cards.length > 0; else noCardsMessage">
+<div *ngIf="cards && cards.length > 0; else noCardsMessage">
     <div style="width: 100%; display: inline-block;">
-        <mat-checkbox *ngIf="viewEditMode" style="float:right" [(ngModel)]="selectAll" (click)="clickSelectAll()"></mat-checkbox>
+        <mat-checkbox *ngIf="viewEditMode" style="float:right" [(ngModel)]="allSelected" (click)="selectAllCards()"></mat-checkbox>
     </div>
-    <card-row *ngFor="let card of Cards | cardFilter: FilterCards | curveSort" [Card]="card" [viewEditMode]="viewEditMode" 
-        (deleteCardEvent)="deleteCard($event)"></card-row>
+    <app-card-row *ngFor="let card of cards | cardFilter: filteredCards | curveSort" [card]="card" [viewEditMode]="viewEditMode" 
+        (deleteCardEvent)="deleteCard($event)"></app-card-row>
 
-    <div class="full-width center" *ngIf="Cards.length > 0 && Cards.length <= FilterCards.length">
+    <div class="full-width center" *ngIf="cards.length <= filteredCards.length">
         <p>Urza you have gone too far! You filtered it all!</p>
-        <button mat-raised-button style="display:inline-block" (click)="FilterCards = []">Reset</button>
-        <button mat-raised-button style="display:inline-block" (click)="openCardListFilterDialog()">Filter Again</button>
+        <button mat-raised-button style="display:inline-block" (click)="filteredCards = []">Reset</button>
+        <button mat-raised-button style="display:inline-block" (click)="openFilterDialog()">Filter Again</button>
     </div>
 </div>
 <ng-template #noCardsMessage>

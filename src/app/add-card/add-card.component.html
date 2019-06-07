@@ -1,17 +1,16 @@
 <form class="add-card-form">
-  <!-- TODO - move to it's own component -->
-  <mat-form-field class="full-width">
-      <input matInput [(ngModel)]="searchText" placeholder="Add Card" name="searchText" aria-label="Add Card"
-          [matAutocomplete]="auto" [formControl]="addCardCtrl">
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCard"
-          (optionSelected)="addCard($event.option.value)">
-          <mat-option *ngFor="let card of searchResults" [value]="card">
-              <!-- <img style="vertical-align:middle;" [src]="card.ImageUris.Small" onError="this.src=environment.cardBackUrl" height="50" aria-hidden/>
-                  <span>{{card.Name}}</span>
-                  <i class="ss ss-{{card.SetCode == 'tsb' ? 'tsp' : card.Set.toLowerCase()}} ss-{{card.Set == 'tsb' ? 'timeshifted' : card.Rarity.toLowerCase()}} ss-fw ss-grad"
-                      aria-hidden></i> -->
-              <card-row [Card]="card"></card-row>
-          </mat-option>
-      </mat-autocomplete>
-  </mat-form-field>
+    <mat-form-field class="full-width">
+        <input matInput [(ngModel)]="searchText" placeholder="Add Card" name="searchText" aria-label="Add Card"
+            [matAutocomplete]="auto" [formControl]="addCardCtrl">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayCard"
+            (optionSelected)="addCard($event.option.value)">
+            <mat-option *ngFor="let card of searchResults" [value]="card">
+                <img class="clickable" style="vertical-align: middle;" [src]="card.Card.ImageUriNormal" onError="this.src='./../../assets/images/card_back.jpg'"
+                    (click)="openCardImageDialog()" height="50" aria-hidden/>
+                <span>{{card.Card.CardName}}</span>
+                <i class="ss ss-{{card.Card.SetCode == 'tsb' ? 'tsp' : card.Card.SetCode.toLowerCase()}} ss-{{card.Card.SetCode == 'tsb' ? 'timeshifted' : card.Card.Rarity.toLowerCase()}} ss-fw ss-grad"
+                    [matTooltip]="card.Card.SetName" aria-hidden></i>
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
 </form>

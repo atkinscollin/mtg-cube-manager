@@ -29,9 +29,10 @@ export class AddCardComponent implements OnInit {
     constructor (private cardService: CardService, private cubeCardService: CubeCardService, private sortUtility: SortUtility) { }
 
     ngOnInit() {
+        this.clearSearch();
         this.populateSearchCardList();
 
-        // Sets up search filter
+        // Sets up search filter.
         this.addCardCtrl.valueChanges
             .subscribe(() => {
                 if (this.searchText && this.searchText.length >= 2) {
@@ -47,7 +48,7 @@ export class AddCardComponent implements OnInit {
         this.cubeCardService.createCubeCard(newCubeCard)
             .pipe(finalize(() => this.clearSearch()))
             .subscribe(() => {
-                this.addCardEvent.emit(card);
+                this.addCardEvent.emit();
             });
     }
 

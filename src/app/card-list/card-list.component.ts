@@ -1,32 +1,45 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Card } from '../models/card';
+import { CubeCard } from '../models/cube-card';
+import { MatDialog } from '@angular/material/dialog';
+import { FilterDialog } from '../card-list-filter-dialog/filter-dialog.component';
 
 @Component({
-    selector: 'card-list',
+    selector: 'app-card-list',
     templateUrl: './card-list.component.html',
     styleUrls: ['./card-list.component.css']
 })
 export class CardListComponent implements OnInit {
 
-    @Input() Cards: Card[] = new Array<Card>();
-    @Input() FilterCards: Card[] = new Array<Card>();
-    @Input() viewEditMode: boolean = false;
+    @Input() cards: CubeCard[] = new Array<CubeCard>();
+    @Input() filteredCards: CubeCard[] = new Array<CubeCard>();
+    @Input() viewEditMode = false;
 
-    selectAll: boolean = false;
+    allSelected = false;
 
-    constructor() { }
+    constructor(public dialog: MatDialog) { }
 
     ngOnInit() { }
 
-    clickSelectAll() {
-        this.Cards.forEach(card => {
+    deleteCard(cardToDelete: Card) {
+        this.cards.splice(this.cards.findIndex(card => card.Card === cardToDelete), 1);
+    }
+
+    openFilterDialog() {
+        const dialogRef = this.dialog.open(FilterDialog, {
+            data: { Cards: this.cards, FilterCards: this.filteredCards }
+        });
+
+        dialogRef.afterClosed()
+            .subscribe(filterCards => {
+                this.filteredCards = filterCards;
+            });
+    }
+
+    selectAllCards() {
+        this.cards.forEach(card => {
             let cardAny = card as any;
-            cardAny.selected = !this.selectAll;
+            cardAny.selected = !this.allSelected;
         });
     }
-
-    deleteCard(cardToDelete: Card) {console.log(cardToDelete);
-        this.Cards.splice(this.Cards.findIndex(card => card == cardToDelete), 1);
-    }
-
 }

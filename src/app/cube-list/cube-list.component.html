@@ -39,16 +39,17 @@
     <app-add-card [cube]="cube" [viewEditMode]="viewEditMode" (addCardEvent)="getCube()"></app-add-card>
 </div>
 
-<div *ngIf="cube && cube.CubeCards && cube.CubeCards.length > 0;">
-    <div *ngFor="let card of cube.CubeCards">
+<!-- <div *ngIf="cube && cube.CubeCards && cube.CubeCards.length > 0;">
+    <div *ngFor="let card of cube.CubeCards"> -->
         <!-- <card-row *ngFor="let card of cube.CubeCards | cardFilter: filteredCards | curveSort" [Card]="card" [viewEditMode]="viewEditMode"></card-row> -->
-        <img style="vertical-align:middle;" [src]="card.Card.ImageUriSmall" onError="this.src=environment.cardBackUrl"
+        <!-- <img style="vertical-align:middle;" [src]="card.Card.ImageUriSmall" onError="this.src='./../../assets/images/card_back.jpg'"
             height="50" aria-hidden />
         <span>{{card.Card.CardName}}</span>
         <i class="ss ss-{{card.Card.SetCode == 'tsb' ? 'tsp' : card.Card.SetCode.toLowerCase()}} ss-{{card.Card.SetCode == 'tsb' ? 'timeshifted' : card.Card.Rarity.toLowerCase()}} ss-fw ss-grad"
             aria-hidden></i>
     </div>
-</div>
+</div> -->
+<app-card-list [cards]="cube.CubeCards" [filteredCards]="filteredCards" [viewEditMode]="viewEditMode"></app-card-list>
 
 <!-- <button mat-mini-fab class="fixed-bottom-right" (click)="viewEditMode = !viewEditMode" aria-label="Toggle edit view">
     <mat-icon>edit</mat-icon>

@@ -1,11 +1,11 @@
-<div *ngIf="Card" class="full-width" style="line-height: 60px; vertical-align: middle; display: inline-block;">
-    <img class="clickable" style="vertical-align: middle;" [src]="Card.ImageUriNormal" onError="this.src=environment.cardBackUrl"
+<div *ngIf="card && card.Card" class="full-width" style="line-height: 60px; vertical-align: middle; display: inline-block;">
+    <img class="clickable" style="vertical-align: middle;" [src]="card.Card.ImageUriNormal" onError="this.src='./../../assets/images/card_back.jpg'"
         (click)="openCardImageDialog()" height="50" aria-hidden/>
-    <span>{{Card.CardName}}</span>
-    <i class="ss ss-{{Card.SetCode == 'tsb' ? 'tsp' : Card.SetCode.toLowerCase()}} ss-{{Card.SetCode == 'tsb' ? 'timeshifted' : Card.Rarity.toLowerCase()}} ss-fw ss-grad"
-        [matTooltip]="Card.Set" aria-hidden></i>
-    <mat-checkbox *ngIf="viewEditMode" style="vertical-align: middle; float: right" [(ngModel)]="Card.selected"></mat-checkbox>
-    <button mat-icon-button *ngIf="viewEditMode" style="vertical-align: middle; float: right" color="warn" (click)="deleteCardEvent.emit(Card)">
+    <span>{{card.Card.CardName}}</span>
+    <i class="ss ss-{{card.Card.SetCode == 'tsb' ? 'tsp' : card.Card.SetCode.toLowerCase()}} ss-{{card.Card.SetCode == 'tsb' ? 'timeshifted' : card.Card.Rarity.toLowerCase()}} ss-fw ss-grad"
+        [matTooltip]="card.Card.SetName" aria-hidden></i>
+    <mat-checkbox *ngIf="viewEditMode" style="vertical-align: middle; float: right" [(ngModel)]="card.selected"></mat-checkbox>
+    <button mat-icon-button *ngIf="viewEditMode" style="vertical-align: middle; float: right" color="warn" (click)="deleteCardEvent.emit(card)">
         <mat-icon>delete</mat-icon>
     </button>
 </div>
